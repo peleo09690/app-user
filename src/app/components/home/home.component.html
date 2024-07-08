@@ -1,0 +1,178 @@
+<!-- <div *ngFor="let item of this.test, let i = index">
+    <div>{{item.name}}</div>
+</div> -->
+<div class="container-home">
+    <div class="slide-home image-banner">
+        <img src="./../../../assets/images/image-slide1.webp"
+             alt="">
+    </div>
+    <div class="banner-home-info image-banner">
+        <img src="./../../../assets/images/banner-info.jpg"
+             alt="">
+    </div>
+    <div class="box-category image-banner">
+        <img src="./../../../assets/images/box-image-product.jpg"
+             alt="">
+    </div>
+    <div class="banner-free-ship image-banner">
+        <img src="./../../../assets/images/banner-freeship.webp"
+             alt="">
+    </div>
+
+    <div class="group-slide-box-product">
+        <div class="group_deal">
+            <span class="bg_image_countdown"
+                  style="background-image: url('https://japana.vn/uploads/japana.vn/block/2023/10/09/1696817384-deal-chop-nhoang.gif');display: block;width: 100%;background-size: contain;background-repeat: no-repeat;height: 40px;"></span>
+        </div>
+
+        <div class="group-box-prod">
+            <div class="product-list">
+                <ngx-slick-carousel class="carousel"
+                                    [config]="slideConfig">
+                    <div ngxSlickItem
+                         *ngFor="let product of productss"
+                         class="product">
+                        <div class="product-image">
+                            <img [src]="product.imageUrl"
+                                 alt="{{product.name}}">
+                            <div class="discount-tag">-{{product.discount}}%</div>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="title">
+                                <a href=""
+                                   title="{{product.name}}">{{product.name}}</a>
+                            </h3>
+                            <div class="rating">
+                                <span *ngFor="let star of [1, 2, 3, 4, 5]">
+                                    <i class="fa"
+                                       [class.fa-star]="star <= product.rating"
+                                       [class.fa-star-half-alt]="star === ceil(product.rating) && product.rating % 1 !== 0"></i>
+                                </span>
+                                <span class="mrg-4"> |</span>
+                                <span class="reviews">({{product.reviews | number:'1.0-0'}} đã bán)</span>
+                            </div>
+                            <p class="price">{{product.price | currency:'VND':'symbol':'1.0':'vi-VN' }}
+                                <del>{{product.originalPrice | currency:'VND':'symbol':'1.0':'vi-VN'}}</del>
+                            </p>
+                        </div>
+                    </div>
+                </ngx-slick-carousel>
+            </div>
+        </div>
+    </div>
+
+    <div class="banner-discount image-banner">
+        <img src="./../../../assets/images/banner-discount.webp"
+             alt="">
+    </div>
+    <div class="banner-hot-branch image-banner">
+        <img src="./../../../assets/images/hot-brand-pc.jpg"
+             alt="">
+    </div>
+
+    <div class="group-product-hot-brand group-product">
+        <div class="list-category-hot-brand list-category">
+            <ul>
+                <li *ngFor="let item of itemsHotBrand; let i = index"
+                    [class.active]="i === activeItemIndex"
+                    (click)="setActiveItem(i)" >
+                    {{ item.name }}
+                </li>
+            </ul>
+        </div>
+        <div class="list-product-by-brand list-product">
+            <div *ngFor="let product of productsHotBrand"
+                 class="product">
+                <div class="product-image">
+                    <img [src]="product.imageUrl"
+                         alt="{{product.name}}">
+                    <div class="discount-tag">-{{product.discount}}%</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="title">
+                        <a href=""
+                           title="{{product.name}}">{{product.name}}</a>
+                    </h3>
+                    <div class="rating">
+                        <span *ngFor="let star of [1, 2, 3, 4, 5]">
+                            <i class="fa"
+                               [class.fa-star]="star <= product.rating"
+                               [class.fa-star-half-alt]="star === ceil(product.rating) && product.rating % 1 !== 0"></i>
+                        </span>
+                        <span class="mrg-4"> |</span>
+                        <span class="reviews">({{product.reviews | number:'1.0-0'}} đã bán)</span>
+                    </div>
+                    <p class="price">{{product.price | currency:'VND':'symbol':'1.0':'vi-VN' }}
+                        <del>{{product.originalPrice | currency:'VND':'symbol':'1.0':'vi-VN'}}</del>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="banner-block-family image-banner">
+        <img src="./../../../assets/images/block-family.jpg"
+             alt="">
+    </div>
+
+    <div class="group-product-family group-product">
+        <div class="list-category-family list-category">
+            <ul>
+                <li *ngFor="let item of itemsFamily; let i = index"
+                    [class.active]="i === activeItemFamilyIndex"
+                    (click)="setActiveItemFamily(i)" >
+                    {{ item.name }}
+                </li>
+            </ul>
+        </div>
+        <div class="list-product-by-family list-product">
+            <div *ngFor="let product of productsFamily"
+                 class="product">
+                <div class="product-image">
+                    <img [src]="product.imageUrl"
+                         alt="{{product.name}}">
+                    <div class="discount-tag">-{{product.discount}}%</div>
+                </div>
+                <div class="product-info">
+                    <h3 class="title">
+                        <a href=""
+                           title="{{product.name}}">{{product.name}}</a>
+                    </h3>
+                    <div class="rating">
+                        <span *ngFor="let star of [1, 2, 3, 4, 5]">
+                            <i class="fa"
+                               [class.fa-star]="star <= product.rating"
+                               [class.fa-star-half-alt]="star === ceil(product.rating) && product.rating % 1 !== 0"></i>
+                        </span>
+                        <span class="mrg-4"> |</span>
+                        <span class="reviews">({{product.reviews | number:'1.0-0'}} đã bán)</span>
+                    </div>
+                    <p class="price">{{product.price | currency:'VND':'symbol':'1.0':'vi-VN' }}
+                        <del>{{product.originalPrice | currency:'VND':'symbol':'1.0':'vi-VN'}}</del>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="banner-best-selling-brand image-banner">
+        <img src="./../../../assets/images/banner-best-selling-brand.jpg"
+             alt="">
+    </div>
+
+    <div class="group-box-best-selling-brand group-box-prod">
+        <div class="product-list best-selling-product">
+            <ngx-slick-carousel class="carousel"
+                                [config]="slideConfig">
+                <div ngxSlickItem
+                     *ngFor="let product of listProductBestSellingBrand"
+                     class="product">
+                    <div class="product-image">
+                        <img [src]="product?.imageUrl"
+                             alt="{{product?.name}}">
+                    </div>
+                </div>
+            </ngx-slick-carousel>
+        </div>
+    </div>
+</div>

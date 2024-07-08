@@ -1,0 +1,115 @@
+<div class="container-header">
+  <a href=""
+     class="block-header-banner-top">
+    <img src="./../../../../assets/images/image-header1.webp"
+         alt="">
+  </a>
+  <a href=""
+     class="block-header-banner-top">
+    <img src="./../../../../assets/images/image-header2.webp"
+         alt="">
+  </a>
+  <div class="block-header__header">
+    <div class="header-left">
+      <a href=""
+         class="header-left-logo">
+        <img src="./../../../../assets/images/logo-header1.webp"
+             alt="">
+      </a>
+
+      <div class="header-left__menu menu-cate">
+        <button class="btn-menu-category">
+          <img src="./../../../../assets/images/icon_grid.svg"
+               alt="">
+          Danh mục sản phẩm
+        </button>
+      </div>
+
+      <div class="group-search">
+        <div class="input-search">
+          <button class="btn-search">
+            <img src="./../../../../assets/images/icon_search.svg"
+                 alt="">
+          </button>
+          <input type="text"
+                 placeholder="Tìm kiếm sản phẩm ...">
+        </div>
+
+        <ul class="box-search__header-tags">
+          <li>
+            <a href=""
+               title="Tảo">Tảo</a>
+          </li>
+          <li>
+            <a href=""
+               title="Fucoidan">Fucoidan</a>
+          </li>
+          <li>
+            <a href=""
+               title="Collagen">Collagen</a>
+          </li>
+          <li>
+            <a href=""
+               title="Tăng chiều cao">Tăng chiều cao</a>
+          </li>
+          <li>
+            <a href=""
+               title="Trị nám">Trị nám</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="header-left__tracking-order">
+        <a rel="nofollow"
+           href=""
+           title="Theo dõi đơn hàng">
+          <img src="./../../../../assets/images/receipt.svg"
+               alt="">
+          Tra cứu<br>đơn hàng
+        </a>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <a rel="nofollow"
+         href=""
+         title="Giỏ hàng"
+         class="header-right__cart">
+        <img src="./../../../../assets/images/shopping_basket.svg"
+             alt="">
+        <span class="cart-count"><abbr class="count-giohang">0</abbr></span>
+      </a>
+
+      <div class="header-right__user user-info">
+        <button class="user-info__dropdown dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                (click)="showDropdown()"
+                aria-expanded="true">
+          <span class="user-info__dropdown__no-avatar"
+                style="background-image: url('/assets/images/no_avatar_round.png');"></span>
+        </button>
+        <ul class="user-info__dropdown-list dropdown-menu no-login" [ngClass]="{ 'show': isShowDropdown }"
+            style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(1292.8px, 118.4px, 0px);"
+            data-popper-placement="bottom-start">
+          <li>
+            <a rel="nofollow"
+               id="register-btn"
+               href="javascript:void(0);"
+               title="Đăng ký"
+               data-bs-toggle="modal"
+               data-bs-target="#registerOtp">Đăng ký</a>
+          </li>
+          <li>
+            <a rel="nofollow"
+               id="login-btn"
+               href="javascript:void(0);"
+               title="Đăng nhập"
+               data-bs-toggle="modal"
+               data-bs-target="#Register">Đăng nhập</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
