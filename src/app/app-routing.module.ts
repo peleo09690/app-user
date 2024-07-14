@@ -4,30 +4,35 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { CommonModule } from '@angular/common';
 import { LayoutComponent } from './components/layout/layout.component';
-import { ProductDetailComponent } from './components/product-detail/product-detail.component';
+import { ProductComponent } from './components/product/product.component';
+import { ProductDetailComponent } from './components/product/product-detail/product-detail.component';
 
 
 const routes: Routes = [
-{
-  path: "login",
-  component: LoginComponent
-},
-{
-  path: "",
-  component: LayoutComponent,
-  // canActivateChild: [()=> inject(AuthService).isAuthenticated()],
-  children: [
+  {
+    path: "login",
+    component: LoginComponent
+  },
+  {
+    path: "",
+    component: LayoutComponent,
+    // canActivateChild: [()=> inject(AuthService).isAuthenticated()],
+    children: [
       {
-          path: "",
-          component: HomeComponent
+        path: "",
+        component: HomeComponent
       },
       {
-        path: "detail",
+        path: "product",
+        component: ProductComponent
+      },
+      {
+        path: "product/:id",
         component: ProductDetailComponent
-    }
-     
-  ]
-}
+      }
+
+    ]
+  }
 ]
 @NgModule({
   imports: [

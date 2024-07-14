@@ -34,4 +34,9 @@ export class CategoryService {
     // Add a new category
     return this.http.post(`${this.apiBaseUrl}/categories`, insertCategoryDTO);
   }
+
+  getListCategoryType(param: any): Observable<any> {
+    // Add a new category
+    return this.http.post(`${this.apiBaseUrl}/un_auth/category/get_info_category_type`, param);
+  }
 }

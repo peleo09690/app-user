@@ -1,0 +1,88 @@
+<div class="product-detail-container">
+  <div class="link-product">
+    <a href="/"> Trang chủ</a>
+    <div class="group-link-child"
+         *ngIf="categoryName">
+      <span class="material-icons">
+        chevron_right
+      </span>
+      <a href="">{{categoryName}}</a>
+    </div>
+    <div class="group-link-child"
+         *ngIf="productName">
+      <span class="material-icons">
+        chevron_right
+      </span>
+      <a href="">{{productName}}</a>
+    </div>
+  </div>
+
+  <div class="group-main-product-detail">
+    <div class="group-image-product-detail">
+      <div class="image-main">
+        <img [src]="productDetail.srcImage"
+             alt="">
+      </div>
+      <div class="list-image">
+        <ngx-slick-carousel class="carousel"
+                            [config]="slideConfig">
+          <div ngxSlickItem
+               *ngFor="let product of listImageProduct"
+               class="product">
+            <div class="product-image">
+              <img [src]="product?.imageUrl"
+                   alt="{{product?.name}}">
+            </div>
+          </div>
+        </ngx-slick-carousel>
+      </div>
+    </div>
+    <div class="group-infomation-product">
+      <div class="title-infor-name">
+        <p>{{productDetail.product_name}}</p>
+      </div>
+      <div class="group-rate">
+        <span class="sold-count">Đã bán {{productDetail.quantity | number:'1.0-0'}}</span>
+        <span class="rate"></span>
+      </div>
+      <div class="brg-gray">
+        <div class="price-info">
+          <p class="price">{{productDetail.price | currency:'VND':'symbol':'1.0':'vi-VN' }}
+            <del *ngIf="productDetail.originalPrice">{{productDetail.originalPrice | currency:'VND':'symbol':'1.0':'vi-VN'}}</del>
+          </p>
+        </div>
+        <div class="action-buttons">
+          <div class="quantity-selector">
+            <button class="decrease">
+              <span class="material-icons">remove</span>
+            </button>
+            <input type="number"
+                   value="1"
+                   >
+            <button class="increase">
+              <span class="material-icons">add</span>
+            </button>
+          </div>
+          <button class="add-to-cart btn-card">Thêm vào giỏ</button>
+          <button class="buy-now btn-card">Mua ngay</button>
+        </div>
+      </div>
+      
+      <div class="product-details">
+        <div class="detail-row detail-title"><span class="detail-label">Thông tin chung</span></div>
+        <div class="infor-detail-product">
+          <div class="detail-left control-detail">
+            <div class="detail-row"><span class="detail-label">SKU</span><span class="detail-value">001DD54</span></div>
+            <div class="detail-row"><span class="detail-label">GTIN</span><span class="detail-value">4571157256290</span></div>
+            <div class="detail-row brd-b brb-left"><span class="detail-label">Thương hiệu</span><span class="detail-value">Orihiro</span></div>
+          </div>
+          <div class="detail-right control-detail">
+            <div class="detail-row "><span class="detail-label">Quy cách</span><span class="detail-value">Hộp</span></div>
+            <div class="detail-row"><span class="detail-label">Xuất xứ</span><span class="detail-value">Nhật Bản</span></div>
+            <div class="detail-row brd-b brb-right"><span class="detail-label">Sản xuất tại</span><span class="detail-value">Nhật Bản</span></div>
+          </div>
+        </div>
+    </div>
+    </div>
+  </div>
+</div>

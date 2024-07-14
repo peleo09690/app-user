@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, LOCALE_ID, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, importProvidersFrom, LOCALE_ID, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app/app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
+
 import {
   HttpClientModule,
   HTTP_INTERCEPTORS
@@ -17,13 +18,15 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { registerLocaleData } from '@angular/common';
 import localeVi from '@angular/common/locales/vi';
 registerLocaleData(localeVi, 'vi-VN');
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 @NgModule({
   declarations: [
     LoginComponent,
     AppComponent,
   ],
   exports: [
-    AngularMaterialModule
+    AngularMaterialModule,
+    CommonModule
   ],
   imports: [
     CommonModule,
@@ -34,8 +37,10 @@ registerLocaleData(localeVi, 'vi-VN');
     AppRoutingModule,
     NgbModule,
     AngularMaterialModule,
-    SlickCarouselModule
+    SlickCarouselModule,
+    FormsModule,
   ],
+  
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -43,6 +48,9 @@ registerLocaleData(localeVi, 'vi-VN');
       multi: true,
       
     },
+    importProvidersFrom(
+      BrowserAnimationsModule
+    ),
     { provide: LOCALE_ID, useValue: 'vi-VN' }
   ],
   bootstrap: [

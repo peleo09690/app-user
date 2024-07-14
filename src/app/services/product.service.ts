@@ -33,10 +33,10 @@ export class ProductService {
     return this.http.get<Product>(`${this.apiBaseUrl}/products/${productId}`);
   }
 
-  getProductsByIds(productIds: number[]): Observable<Product[]> {
-    const params = new HttpParams().set('ids', productIds.join(','));
-    return this.http.get<Product[]>(`${this.apiBaseUrl}/products/by-ids`, { params });
+  getProductsByIds(productIds: any): Observable<any> {
+    return this.http.get<any>(`${this.apiBaseUrl}/un_auth/product/`+productIds);
   }
+
   deleteProduct(productId: number): Observable<string> {
     
     return this.http.delete<string>(`${this.apiBaseUrl}/products/${productId}`);
@@ -59,6 +59,18 @@ export class ProductService {
   deleteProductImage(id: number): Observable<any> {
     
     return this.http.delete<string>(`${this.apiBaseUrl}/product_images/${id}`);
+  }
+
+  getProductsAll(params:any): Observable<any> {
+    return this.http.post(`${this.apiBaseUrl}/un_auth/product/get_all_product`, params);
+  }
+  getOriginalImage(fileId: string): Observable<Blob> {
+    const url = `${this.apiBaseUrl}/un_auth/files/download/original/${fileId}`;
+    return this.http.get(url, { responseType: 'blob' });
+  }
+
+  getProductsAllByCategory(params:any): Observable<any> {
+    return this.http.post(`${this.apiBaseUrl}/un_auth/product/category/get_type_all_product`, params);
   }
 }
 //update.category.admin.component.html

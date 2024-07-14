@@ -1,5 +1,5 @@
 <div class="container-header">
-  <a href=""
+  <a href="/"
      class="block-header-banner-top">
     <img src="./../../../../assets/images/image-header1.webp"
          alt="">
@@ -18,43 +18,66 @@
       </a>
 
       <div class="header-left__menu menu-cate">
-        <button class="btn-menu-category">
-          <img src="./../../../../assets/images/icon_grid.svg"
-               alt="">
+        <!-- Button to trigger the main menu -->
+        <button mat-button class="btn-menu-category" [matMenuTriggerFor]="mainMenu">
+          <img src="./../../../../assets/images/icon_grid.svg" alt="">
           Danh mục sản phẩm
         </button>
+      
+        <!-- Main menu -->
+        <mat-menu #mainMenu="matMenu">
+          <ng-container *ngFor="let menu of menus">
+            <!-- Menu item for each category -->
+            <button mat-menu-item [matMenuTriggerFor]="menu.subMenus?.length > 0 ? menuName: null">
+              <span class="menu-icon">{{ menu.icon }}</span>
+              <span class="menu-name">{{ menu.name }}</span>
+            </button>
+      
+            <!-- Sub menu for each category -->
+            <mat-menu #menuName="matMenu">
+              <ng-container *ngFor="let subMenu of menu.subMenus">
+                <!-- Sub menu item with arrow if it has sub sub menus -->
+                <button mat-menu-item *ngIf="subMenu.subMenus?.length" [matMenuTriggerFor]="subMenuName">
+                  {{ subMenu.name }}
+                </button>
+      
+                <!-- Sub menu item without arrow if it has no sub sub menus -->
+                <button mat-menu-item *ngIf="!subMenu.subMenus?.length">
+                  {{ subMenu.name }}
+                </button>
+      
+                <!-- Sub sub menu for each sub menu -->
+                <mat-menu #subMenuName="matMenu" >
+                  <ng-container *ngFor="let subSubMenu of subMenu.subMenus">
+                    <!-- Sub sub menu item -->
+                    <button mat-menu-item *ngIf="subSubMenu.subMenus?.length">
+                      {{ subSubMenu.name }}
+                    </button>
+                    <button mat-menu-item *ngIf="!subSubMenu.subMenus?.length">
+                      {{ subMenu.name }}
+                    </button>
+                  </ng-container>
+                </mat-menu>
+              </ng-container>
+            </mat-menu>
+          </ng-container>
+        </mat-menu>
       </div>
 
       <div class="group-search">
         <div class="input-search">
-          <button class="btn-search">
+          <button class="btn-search" (click)="onSearchProduct()">
             <img src="./../../../../assets/images/icon_search.svg"
                  alt="">
           </button>
           <input type="text"
-                 placeholder="Tìm kiếm sản phẩm ...">
+                 placeholder="Tìm kiếm sản phẩm ..." [(ngModel)]="textSearchProduct" (keyup.enter)="onSearchProduct()">
         </div>
 
         <ul class="box-search__header-tags">
-          <li>
-            <a href=""
-               title="Tảo">Tảo</a>
-          </li>
-          <li>
-            <a href=""
-               title="Fucoidan">Fucoidan</a>
-          </li>
-          <li>
-            <a href=""
-               title="Collagen">Collagen</a>
-          </li>
-          <li>
-            <a href=""
-               title="Tăng chiều cao">Tăng chiều cao</a>
-          </li>
-          <li>
-            <a href=""
-               title="Trị nám">Trị nám</a>
+          <li *ngFor="let category of categories">
+            <a (click)="searchProductByCategory(category)"
+               title="category.category_name">{{category.category_name}}</a>
           </li>
         </ul>
       </div>

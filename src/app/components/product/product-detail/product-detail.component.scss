@@ -1,0 +1,192 @@
+.product-detail-container {
+  .link-product {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 0;
+    background-color: #ffffff;
+    overflow: visible;
+    border-color: #d9d9d9;
+    border-style: solid;
+    border-top-width: 0px;
+    border-bottom-width: 1px;
+    border-left-width: 0px;
+    border-right-width: 0px;
+  }
+
+  .group-main-product-detail {
+    display: flex;
+    gap: 20px;
+
+    .group-image-product-detail {
+      width: 50%;
+
+      .image-main {
+        img {
+          width: 100%;
+          height: 540px;
+        }
+      }
+    }
+
+    .group-infomation-product {
+      width: 50%;
+
+      .title-infor-name {
+        p {
+          font: 18px / 1.4 'sf pro display bold', sans-serif;
+          font-weight: 600;
+          margin-bottom: 0;
+        }
+      }
+
+      .group-rate {
+        .sold-count {
+          font-size: 14px;
+          color: #2367ff;
+        }
+      }
+
+      .brg-gray {
+        border-radius: 4px;
+        padding: 15px;
+        background-color: rgb(217 217 217 / 20%);
+        margin-bottom: 15px;
+
+        .price-info {
+          .price {
+            font: 28px 'sf pro display bold', sans-serif;
+            color: #dc0000;
+            font-weight: 600;
+
+            del {
+              font: 26px 'sf pro display', sans-serif;
+              color: #888;
+            }
+          }
+        }
+
+        .action-buttons {
+          display: flex;
+          align-items: center;
+
+          .quantity-selector {
+            display: flex;
+
+            button {
+              font-size: 17px;
+              line-height: 12px;
+              border-radius: 4px;
+              flex-shrink: 0;
+              width: 24px;
+              height: 24px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border: none;
+              padding: 0;
+
+              .material-icons {
+                color: #ffffff;
+              }
+            }
+
+            .decrease {
+              background-color: #d9d9d9;
+            }
+
+            .increase {
+              background-color: #dc0000;
+            }
+
+            input {
+              color: #000000;
+              font-size: 14px;
+              text-align: center;
+              border: none;
+              width: 30px;
+              height: 24px;
+              margin: 0 5px;
+              border-radius: 4px;
+              outline: none;
+            }
+          }
+
+          .btn-card {
+            height: 46px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            transition: opacity 0.3s ease;
+            font-size: 17px;
+            line-height: 12px;
+            border-radius: 4px;
+            outline: none;
+            border: none;
+            margin-right: 20px;
+            padding: 0 30px;
+          }
+
+          .add-to-cart {
+            background-color: #ffb700;
+            margin-left: 20px;
+            margin-right: 20px;
+          }
+
+          .buy-now {
+            background-color: #dc0000;
+          }
+
+        }
+      }
+
+      .product-details {
+        margin-top: 20px;
+
+        .detail-row {
+          display: flex;
+          justify-content: space-between;
+          padding: 8px 10px;
+          border-top: 1px solid #ddd;
+          border-left: 1px solid #ddd;
+
+          .detail-label {
+            font-weight: bold;
+            color: #333;
+          }
+
+          .detail-value {
+            color: #777;
+          }
+        }
+
+        .detail-title {
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+          border-right: 1px solid #ddd;
+        }
+
+        .infor-detail-product {
+          display: flex;
+
+          .detail-right {
+            .detail-row {
+              border-right: 1px solid #ddd;
+            }
+          }
+
+          .control-detail {
+            width: 50%;
+          }
+
+          .brd-b {
+            border-bottom: 1px solid #ddd;
+          }
+        }
+
+      }
+    }
+  }
+}

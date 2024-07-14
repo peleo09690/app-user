@@ -18,8 +18,8 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 })
 export class HomeComponent implements OnInit {
   @ViewChild(SlickCarouselComponent) slickCarousel: SlickCarouselComponent | any;
-  products: Product[] = [];
-  categories: Category[] = []; // Dữ liệu động từ categoryService
+  products: Array<any> = [];
+  categories: any = []; // Dữ liệu động từ categoryService
   selectedCategoryId: number = 0; // Giá trị category được chọn
   currentPage: number = 0;
   itemsPerPage: number = 12;
@@ -132,7 +132,7 @@ export class HomeComponent implements OnInit {
 
   slideConfig = { slidesToShow: 5, slidesToScroll: 5, dots: false, infinite: true };
 
-  itemsHotBrand = [
+  itemsHotBrand: any = [
     { name: 'ORIHIRO', },
     { name: '82x', },
     { name: 'TRANSINO', },
@@ -361,7 +361,7 @@ export class HomeComponent implements OnInit {
     }
   ];
 
-  itemsFamily = [
+  itemsFamily: any = [
     { name: 'Phòng ngừa ung thư', },
     { name: 'Mẹ & bé', },
     { name: 'Sức khỏe người lớn tuổi', },
@@ -610,18 +610,40 @@ export class HomeComponent implements OnInit {
       reviews: 6412,
     }
   ];
+
+  paramsSearchWithCategory = {
+    "category_id": "",
+    "product_name": "",
+    "product_code": "",
+    "page_number": "1",
+    "page_size": "2",
+    "sort_by": "",
+    "sort_direction": "asc"
+  }
+
+  paramsSearchWithFamily = {
+    "category_id": "",
+    "product_name": "",
+    "product_code": "",
+    "page_number": "1",
+    "page_size": "2",
+    "sort_by": "",
+    "sort_direction": "asc"
+  }
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
     private router: Router,
-    private tokenService: TokenService
+    private tokenService: TokenService,
   ) { }
 
   ngOnInit() {
     // this.getProducts(this.keyword, this.selectedCategoryId, this.currentPage, this.itemsPerPage);
     // this.getCategories(1, 100);
-    this.productsHotBrand = this.productsHotBrandOriHiro;
+    // this.productsHotBrand = this.productsHotBrandOriHiro;
     this.productsFamily = this.productsFamilyUT;
+    this.onSearchProduct();
+    this.getListCategories();
   }
   getCategories(page: number, limit: number) {
     this.categoryService.getCategories(page, limit).subscribe({
@@ -688,37 +710,150 @@ export class HomeComponent implements OnInit {
   ceil(value: number): number {
     return Math.ceil(value);
   }
-  setActiveItem(index: number): void {
+  setActiveItem(index: number, item: any): void {
     this.activeItemIndex = index;
-    switch (index) {
-      case 0:
-        this.productsHotBrand = this.productsHotBrandOriHiro;
-        break;
-      case 1:
-        this.productsHotBrand = this.productsHotBrand82X;
-        break;
-
-      default:
-        break;
-    }
+    this.paramsSearchWithCategory.category_id = item.category_id;
+    this.onSearchProductByCategoryWithHotBranch();
   }
 
-  setActiveItemFamily(index: number): void {
-    this.activeItemIndex = index;
-    switch (index) {
-      case 0:
-        this.productsFamily = this.productsFamilyUT;
-        break;
-      case 1:
-        this.productsFamily = this.productsFamilyMamaAndBaby;
-        break;
-
-      default:
-        break;
-    }
+  setActiveItemFamily(index: number, item: any): void {
+    this.activeItemFamilyIndex = index;
+    this.paramsSearchWithFamily.category_id = item.category_id;
+    this.onSearchProductByCategoryWithFamily();
   }
 
-  getDataProductsHotBrand(index: number) {
 
+  getListCategories() {
+    let param = {
+      "type": ["PRODUCT_CATEGORY"]
+    }
+
+    this.categoryService.getListCategoryType(param).subscribe({
+      next: (categories) => {
+        this.categories = categories;
+        this.itemsHotBrand = categories.result_data.categoryInfo;
+        this.itemsFamily = categories.result_data.categoryInfo;
+        this.paramsSearchWithCategory.category_id = this.itemsHotBrand[0]?.category_id;
+        this.paramsSearchWithFamily.category_id = this.itemsFamily[0]?.category_id;
+        this.onSearchProductByCategoryWithHotBranch();
+        this.onSearchProductByCategoryWithFamily();
+      },
+      complete: () => {
+        ;
+      },
+      error: (error: any) => {
+        console.error('Error fetching categories:', error);
+      }
+    });
+  }
+
+  params = {
+    "product_name": "",
+    "product_code": "",
+    "page_number": 1,
+    "page_size": 10,
+    "sort_by": "productName",
+    "sort_direction": "asc"
+  }
+
+  onSearchProduct() {
+
+    this.productService.getProductsAll(this.params).subscribe({
+      next: (value) => {
+
+        let paramsAll = { ...this.params };
+        paramsAll.page_size = value.result_data.total_records;
+        this.productService.getProductsAll(paramsAll).subscribe({
+          next: (valueAll) => {
+            this.products = valueAll.result_data.list_product;
+            this.products.forEach((x: any) => {
+              if (x.image) {
+                this.getImageById(x.image).then((result) => {
+                  x.srcImage = result;
+                }).catch((error) => {
+                  console.error('Error fetching image:', error);
+                });
+              }
+            })
+          }
+        })
+      },
+      error: (error: any) => {
+        ;
+        alert(error.error.message);
+      }
+    })
+  }
+  getImageById(file_id: string): Promise<string | ArrayBuffer | null> {
+    return new Promise((resolve, reject) => {
+      this.productService.getOriginalImage(file_id).subscribe({
+        next: (imageBlob) => {
+          if (imageBlob) {
+            const reader = new FileReader();
+            reader.onload = () => {
+              resolve(reader.result);
+            };
+            reader.onerror = () => {
+              reject(new Error('Failed to read the file'));
+            };
+            reader.readAsDataURL(imageBlob);
+          } else {
+            reject(new Error('No image blob received'));
+          }
+        },
+        error: (error) => {
+          reject(error);
+        }
+      });
+    });
+  }
+
+  onSearchProductByCategoryWithHotBranch() {
+    this.productService.getProductsAllByCategory(this.paramsSearchWithCategory).subscribe({
+      next: (value) => {
+        this.productsHotBrand = value.result_data.list_product;
+        this.productsHotBrand.forEach((x: any) => {
+          if (x.image) {
+            this.getImageById(x.image).then((result) => {
+              x.srcImage = result;
+            }).catch((error) => {
+              console.error('Error fetching image:', error);
+            });
+          }
+        })
+
+      },
+      error: (error: any) => {
+        ;
+        alert(error.error.message);
+      }
+    })
+  }
+
+  onSearchProductByCategoryWithFamily() {
+    this.productService.getProductsAllByCategory(this.paramsSearchWithFamily).subscribe({
+      next: (value) => {
+        this.productsFamily = value.result_data.list_product;
+        this.productsFamily.forEach((x: any) => {
+          if (x.image) {
+            this.getImageById(x.image).then((result) => {
+              x.srcImage = result;
+            }).catch((error) => {
+              console.error('Error fetching image:', error);
+            });
+          }
+        })
+
+      },
+      error: (error: any) => {
+        ;
+        alert(error.error.message);
+      }
+    })
+  }
+  routerLinkProduct(product: any) {
+    this.router.navigate(['/product/'+ product.product_id]).then(() => {
+      window.location.reload(); // Reload trang sau khi navigation
+    });;
   }
 }

@@ -1,0 +1,125 @@
+<div class="product-list-container">
+  <div class="link-product">
+    <a href="/"> Trang chủ</a>
+    <div class="group-link-child"
+         *ngIf="categoryName">
+      <span class="material-icons">
+        chevron_right
+      </span>
+      <a href="">{{categoryName}}</a>
+    </div>
+    <div class="group-link-child"
+         *ngIf="productName">
+      <span class="material-icons">
+        chevron_right
+      </span>
+      <a href="">{{productName}}</a>
+    </div>
+  </div>
+
+  <div class="content-product">
+    <div class="content-left-product">
+      <div class="group-category-child-product group-child-left">
+        <p class="title-child-left">Danh mục</p>
+        <input class="input-search"
+               type="text"
+               placeholder="Tìm kiếm ..." [(ngModel)]="inputSearchCategory" (input)="searchCategoryProduct()" >
+        <div class="check-box-category"
+             *ngFor="let item of filteredCategories">
+          <input type="checkbox">
+          <span>{{item.category_name}}</span>
+        </div>
+      </div>
+
+      <div class="group-search-price group-child-left">
+        <div class="price-slider">
+          <p class="title-child-left">Giá </p>
+          <mat-slider class="custom-slider"
+                      [min]="priceRange.min"
+                      [max]="priceRange.max">
+            <input [(ngModel)]="searchMin"
+                   matSliderStartThumb>
+            <input [(ngModel)]="searchMax"
+                   matSliderEndThumb>
+          </mat-slider>
+          <div class="price-inputs">
+            <div class="group-input-view-price">
+              <label for="min-price">Min</label>
+              <input matInput
+                     type="string"
+                     value="{{searchMin}}" />
+            </div>
+            <div class="group-input-view-price">
+              <label for="max-price">Max</label>
+              <input matInput
+                     type="string"
+                     value="{{searchMax}}" />
+            </div>
+          </div>
+          <button mat-raised-button
+                  class="apply-price-search"
+                  (click)="applyPriceRange()">Áp dụng</button>
+        </div>
+      </div>
+
+      <div class="group-trademark-category-child group-child-left">
+        <p class="title-child-left">Thương hiệu</p>
+        <input class="input-search"
+               type="text"
+               placeholder="Tìm kiếm ..." [(ngModel)]="inputSearchTrademark" (input)="searchTrademarkProduct()">
+        <div class="check-box-category"
+             *ngFor="let item of filteredTrademark">
+          <input type="checkbox">
+          <span>{{item.attribute_name}}</span>
+        </div>
+      </div>
+
+      <div class="group-posts-category-child group-child-left">
+        <div class="group-title-posts">
+          <span class="title-child-left title-post"> Bài viết về {{categoryName}}</span>
+          <span class="show-more">Xem thêm</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-right-product">
+      <div class="header">
+        <div class="title-list-product">
+          {{nameCategory}}
+        </div>
+        <div class="group-sort-product">
+          <span class="title-sort">Sắp xếp theo</span>
+          <button class="sort-button" [class.active]="activeButton === 'default'" (click)=activeButtonSort(0)>Mặc định</button>
+          <button class="sort-button" [class.active]="activeButton === 'hight-price'" (click)=activeButtonSort(1)>Giá cao</button>
+          <button class="sort-button" [class.active]="activeButton === 'low-price'" (click)=activeButtonSort(2)>Giá thấp</button>
+          <button class="sort-button" [class.active]="activeButton === 'name'" (click)=activeButtonSort(3)>A-z</button>
+        </div>
+      </div>
+      <div class="product-grid">
+        <div class="list-product">
+          <div *ngFor="let product of products"
+               class="product">
+            <div class="product-image" (click)="routerLinkProduct(product)">
+              <img [src]="product.srcImage"
+                   alt="{{product.product_name}}">
+              <div *ngIf="product.discount>0"
+                   class="discount-tag">-{{product.discount}}%</div>
+            </div>
+            <div class="product-info" (click)="routerLinkProduct(product)">
+              <h3 class="title">
+                <a href=""
+                   title="{{product.name}}">{{product.product_name}}</a>
+              </h3>
+              <p class="price">{{product.price | currency:'VND':'symbol':'1.0':'vi-VN' }}
+                <del>{{product.price | currency:'VND':'symbol':'1.0':'vi-VN'}}</del>
+              </p>
+            </div>
+          </div>
+        </div>
+        <app-pagination [data]="this.products" [totalRecords]="totalRecords" [pageSize]="this.pageSize"
+            (pageChanged)="onPageChanged($event)">
+          </app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

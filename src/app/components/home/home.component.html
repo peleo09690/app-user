@@ -30,19 +30,21 @@
                 <ngx-slick-carousel class="carousel"
                                     [config]="slideConfig">
                     <div ngxSlickItem
-                         *ngFor="let product of productss"
+                         *ngFor="let product of products"
                          class="product">
-                        <div class="product-image">
-                            <img [src]="product.imageUrl"
-                                 alt="{{product.name}}">
-                            <div class="discount-tag">-{{product.discount}}%</div>
+                        <div class="product-image" (click)="routerLinkProduct(product)">
+                            <img [src]="product.srcImage"
+                                 alt="{{product.product_name}}">
+                            <div *ngIf="product.discount > 0"
+                                 class="discount-tag">-{{product.discount}}%</div>
                         </div>
-                        <div class="product-info">
+                        <div class="product-info" (click)="routerLinkProduct(product)">
                             <h3 class="title">
                                 <a href=""
-                                   title="{{product.name}}">{{product.name}}</a>
+                                   title="{{product.product_name}}">{{product.product_name}}</a>
                             </h3>
-                            <div class="rating">
+                            <div class="rating"
+                                 *ngIf="product.rating">
                                 <span *ngFor="let star of [1, 2, 3, 4, 5]">
                                     <i class="fa"
                                        [class.fa-star]="star <= product.rating"
@@ -52,7 +54,8 @@
                                 <span class="reviews">({{product.reviews | number:'1.0-0'}} đã bán)</span>
                             </div>
                             <p class="price">{{product.price | currency:'VND':'symbol':'1.0':'vi-VN' }}
-                                <del>{{product.originalPrice | currency:'VND':'symbol':'1.0':'vi-VN'}}</del>
+                                <del *ngIf="product.originalPrice">{{product.originalPrice |
+                                    currency:'VND':'symbol':'1.0':'vi-VN'}}</del>
                             </p>
                         </div>
                     </div>
@@ -75,25 +78,27 @@
             <ul>
                 <li *ngFor="let item of itemsHotBrand; let i = index"
                     [class.active]="i === activeItemIndex"
-                    (click)="setActiveItem(i)" >
-                    {{ item.name }}
+                    (click)="setActiveItem(i,item)">
+                    {{ item.category_name }}
                 </li>
             </ul>
         </div>
         <div class="list-product-by-brand list-product">
             <div *ngFor="let product of productsHotBrand"
                  class="product">
-                <div class="product-image">
-                    <img [src]="product.imageUrl"
-                         alt="{{product.name}}">
-                    <div class="discount-tag">-{{product.discount}}%</div>
+                <div class="product-image" (click)="routerLinkProduct(product)">
+                    <img [src]="product.srcImage"
+                         alt="{{product.product_name}}">
+                    <div *ngIf="product.discount > 0"
+                         class="discount-tag">-{{product.discount}}%</div>
                 </div>
-                <div class="product-info">
+                <div class="product-info" (click)="routerLinkProduct(product)">
                     <h3 class="title">
                         <a href=""
-                           title="{{product.name}}">{{product.name}}</a>
+                           title="{{product.product_name}}">{{product.product_name}}</a>
                     </h3>
-                    <div class="rating">
+                    <div class="rating"
+                         *ngIf="product.rating">
                         <span *ngFor="let star of [1, 2, 3, 4, 5]">
                             <i class="fa"
                                [class.fa-star]="star <= product.rating"
@@ -103,7 +108,8 @@
                         <span class="reviews">({{product.reviews | number:'1.0-0'}} đã bán)</span>
                     </div>
                     <p class="price">{{product.price | currency:'VND':'symbol':'1.0':'vi-VN' }}
-                        <del>{{product.originalPrice | currency:'VND':'symbol':'1.0':'vi-VN'}}</del>
+                        <del *ngIf="product.originalPrice">{{product.originalPrice |
+                            currency:'VND':'symbol':'1.0':'vi-VN'}}</del>
                     </p>
                 </div>
             </div>
@@ -120,25 +126,29 @@
             <ul>
                 <li *ngFor="let item of itemsFamily; let i = index"
                     [class.active]="i === activeItemFamilyIndex"
-                    (click)="setActiveItemFamily(i)" >
-                    {{ item.name }}
+                    (click)="setActiveItemFamily(i,item)">
+                    {{ item.category_name }}
                 </li>
             </ul>
         </div>
         <div class="list-product-by-family list-product">
             <div *ngFor="let product of productsFamily"
                  class="product">
-                <div class="product-image">
-                    <img [src]="product.imageUrl"
-                         alt="{{product.name}}">
-                    <div class="discount-tag">-{{product.discount}}%</div>
+                <div class="product-image" 
+                     (click)="routerLinkProduct(product)">
+                    <img [src]="product.srcImage"
+                         alt="{{product.product_name}}">
+                    <div *ngIf="product.discount > 0"
+                         class="discount-tag">-{{product.discount}}%</div>
                 </div>
-                <div class="product-info">
+                <div class="product-info"
+                     (click)="routerLinkProduct(product)">
                     <h3 class="title">
                         <a href=""
-                           title="{{product.name}}">{{product.name}}</a>
+                           title="{{product.product_name}}">{{product.product_name}}</a>
                     </h3>
-                    <div class="rating">
+                    <div class="rating"
+                         *ngIf="product.rating">
                         <span *ngFor="let star of [1, 2, 3, 4, 5]">
                             <i class="fa"
                                [class.fa-star]="star <= product.rating"
@@ -148,7 +158,8 @@
                         <span class="reviews">({{product.reviews | number:'1.0-0'}} đã bán)</span>
                     </div>
                     <p class="price">{{product.price | currency:'VND':'symbol':'1.0':'vi-VN' }}
-                        <del>{{product.originalPrice | currency:'VND':'symbol':'1.0':'vi-VN'}}</del>
+                        <del *ngIf="product.originalPrice">{{product.originalPrice |
+                            currency:'VND':'symbol':'1.0':'vi-VN'}}</del>
                     </p>
                 </div>
             </div>
@@ -167,7 +178,7 @@
                 <div ngxSlickItem
                      *ngFor="let product of listProductBestSellingBrand"
                      class="product">
-                    <div class="product-image">
+                    <div class="product-image" (click)="routerLinkProduct(product)">
                         <img [src]="product?.imageUrl"
                              alt="{{product?.name}}">
                     </div>
