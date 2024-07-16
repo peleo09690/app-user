@@ -13,7 +13,7 @@ import { NgbCarouselConfig, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, SlickCarouselModule,NgbModule],
+  imports: [CommonModule, SlickCarouselModule, NgbModule],
   providers: [NgbCarouselConfig],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
@@ -21,7 +21,7 @@ import { NgbCarouselConfig, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 })
 export class HomeComponent implements OnInit {
   @ViewChild(SlickCarouselComponent) slickCarousel: SlickCarouselComponent | any;
-  products: Array<any> = [];
+  products: any = [];
   categories: any = []; // Dữ liệu động từ categoryService
   selectedCategoryId: number = 0; // Giá trị category được chọn
   currentPage: number = 0;
@@ -648,7 +648,7 @@ export class HomeComponent implements OnInit {
     config.interval = 500;
     config.keyboard = true;
     config.pauseOnHover = true;
-   }
+  }
 
   ngOnInit() {
     // this.getProducts(this.keyword, this.selectedCategoryId, this.currentPage, this.itemsPerPage);
@@ -745,12 +745,15 @@ export class HomeComponent implements OnInit {
     this.categoryService.getListCategoryType(param).subscribe({
       next: (categories) => {
         this.categories = categories;
-        this.itemsHotBrand = categories.result_data.categoryInfo;
-        this.itemsFamily = categories.result_data.categoryInfo;
-        this.paramsSearchWithCategory.category_id = this.itemsHotBrand[0]?.category_id;
-        this.paramsSearchWithFamily.category_id = this.itemsFamily[0]?.category_id;
-        this.onSearchProductByCategoryWithHotBranch();
-        this.onSearchProductByCategoryWithFamily();
+        if(categories.result_data?.categoryInfo){
+          this.itemsHotBrand = categories.result_data.categoryInfo;
+          this.itemsFamily = categories.result_data.categoryInfo;
+          this.paramsSearchWithCategory.category_id = this.itemsHotBrand[0]?.category_id;
+          this.paramsSearchWithFamily.category_id = this.itemsFamily[0]?.category_id;
+          this.onSearchProductByCategoryWithHotBranch();
+          this.onSearchProductByCategoryWithFamily();
+        }
+        
       },
       complete: () => {
         ;
@@ -777,20 +780,25 @@ export class HomeComponent implements OnInit {
 
         let paramsAll = { ...this.params };
         paramsAll.page_size = value.result_data.total_records;
-        this.productService.getProductsAll(paramsAll).subscribe({
-          next: (valueAll) => {
-            this.products = valueAll.result_data.list_product;
-            this.products.forEach((x: any) => {
-              if (x.image) {
-                this.getImageById(x.image).then((result) => {
-                  x.srcImage = result;
-                }).catch((error) => {
-                  console.error('Error fetching image:', error);
-                });
+        if (value.result_data?.length > 0) {
+          this.productService.getProductsAll(paramsAll).subscribe({
+            next: (valueAll) => {
+              this.products = valueAll.result_data.list_product;
+              if (this.products?.result_data?.length > 0) {
+                this.products.forEach((x: any) => {
+                  if (x.image) {
+                    this.getImageById(x.image).then((result) => {
+                      x.srcImage = result;
+                    }).catch((error) => {
+                      console.error('Error fetching image:', error);
+                    });
+                  }
+                })
               }
-            })
-          }
-        })
+            }
+          })
+        }
+
       },
       error: (error: any) => {
         ;
@@ -826,16 +834,17 @@ export class HomeComponent implements OnInit {
     this.productService.getProductsAllByCategory(this.paramsSearchWithCategory).subscribe({
       next: (value) => {
         this.productsHotBrand = value.result_data.list_product;
-        this.productsHotBrand.forEach((x: any) => {
-          if (x.image) {
-            this.getImageById(x.image).then((result) => {
-              x.srcImage = result;
-            }).catch((error) => {
-              console.error('Error fetching image:', error);
-            });
-          }
-        })
-
+        if (this.productsHotBrand?.result_data?.length > 0) {
+          this.productsHotBrand.forEach((x: any) => {
+            if (x.image) {
+              this.getImageById(x.image).then((result) => {
+                x.srcImage = result;
+              }).catch((error) => {
+                console.error('Error fetching image:', error);
+              });
+            }
+          })
+        }
       },
       error: (error: any) => {
         ;
@@ -848,15 +857,17 @@ export class HomeComponent implements OnInit {
     this.productService.getProductsAllByCategory(this.paramsSearchWithFamily).subscribe({
       next: (value) => {
         this.productsFamily = value.result_data.list_product;
-        this.productsFamily.forEach((x: any) => {
-          if (x.image) {
-            this.getImageById(x.image).then((result) => {
-              x.srcImage = result;
-            }).catch((error) => {
-              console.error('Error fetching image:', error);
-            });
-          }
-        })
+        if (this.productsFamily?.result_data?.length > 0) {
+          this.productsFamily.forEach((x: any) => {
+            if (x.image) {
+              this.getImageById(x.image).then((result) => {
+                x.srcImage = result;
+              }).catch((error) => {
+                console.error('Error fetching image:', error);
+              });
+            }
+          })
+        }
 
       },
       error: (error: any) => {
@@ -866,7 +877,7 @@ export class HomeComponent implements OnInit {
     })
   }
   routerLinkProduct(product: any) {
-    this.router.navigate(['/product/'+ product.product_id]).then(() => {
+    this.router.navigate(['/product/' + product.product_id]).then(() => {
       window.location.reload(); // Reload trang sau khi navigation
     });;
   }
@@ -874,18 +885,18 @@ export class HomeComponent implements OnInit {
     console.log('Carousel onItemChange', $event);
   }
 
-  getListImageByType(type:any){
+  getListImageByType(type: any) {
     switch (type) {
       case 1:
-        
+
         break;
-    
+
       default:
         break;
     }
   }
 
-  getFileImageByType(type:any){
+  getFileImageByType(type: any) {
     this.productService.getListFileImageByType(type).subscribe({
       next: (value) => {
         value.result_data.list_product.forEach((x: any) => {

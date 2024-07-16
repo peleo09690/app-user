@@ -1,0 +1,68 @@
+<div class="container-group-page-footer">
+  <div class="link-product">
+    <a href="/"> Trang chủ</a>
+    <div class="group-link-child">
+      <span class="material-icons">
+        chevron_right
+      </span>
+      <a>Theo dõi đơn hàng</a>
+    </div>
+  </div>
+  <div class="group-content-page-footer">
+    <div class="content-left">
+      <div class="header">
+        <img src="./../../../../../assets/images/icon1a.png"
+             alt="">
+        <span>Theo dõi đơn hàng</span>
+      </div>
+      <div class="header header-not-focus">
+        <img src="./../../../../../assets/images/icon1b.png"
+             alt="">
+        <span>Chăm sóc khách hàng</span>
+      </div>
+      <div class="body-content">
+        <div class="control-content">
+          <a href="/sales-regulations">Quy định bán hàng trên Website Japana</a>
+        </div>
+        <div class="control-content">
+          <a href="/member-benefits">Quyền lợi thành viên</a>
+        </div>
+        <div class="control-content">
+          <a href="/shopping-guide">Hướng dẫn mua hàng</a>
+        </div>
+        <div class="control-content">
+          <a href="/return-refund">Chính sách đổi trả và hoàn tiền</a>
+        </div>
+        <div class="control-content">
+          <a href="/privacy-policy">Chính sách bảo mật</a>
+        </div>
+        <div class="control-content">
+          <a href="/warranty-policy">Chính sách bảo hành</a>
+        </div>
+        <div class="control-content">
+          <a href="/delivery-time">Thời gian giao hàng</a>
+        </div>
+        <div class="control-content">
+          <a href="/payment-method">Phương thức thanh toán</a>
+        </div>
+        <div class="control-content">
+          <a href="/infor-website">Về chúng tôi</a>
+        </div>
+
+      </div>
+      <div class="footer-content">
+        <img src="./../../../../../assets/images/icon1b.png"
+             alt="">
+        <span>Liên hệ</span>
+      </div>
+    </div>
+    <div class="content-right">
+      <h3 class="title">Thông tin đơn hàng</h3>
+      <div class="group-search-order-number">
+        <input type="text" placeholder="Nhập mã đơn hàng"
+               [(ngModel)]="inputNumberOrder">
+        <button mat-button (click)="getOrderByTrackingNumber()"> Tra cứu </button>
+      </div>
+    </div>
+  </div>
+</div>
