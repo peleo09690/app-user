@@ -72,5 +72,15 @@ export class ProductService {
   getProductsAllByCategory(params:any): Observable<any> {
     return this.http.post(`${this.apiBaseUrl}/un_auth/product/category/get_type_all_product`, params);
   }
+  // localhost:8083/api/v1/un_auth/article/category/get_all_article_category
+  getAllArticleByCategory(params:any): Observable<any> {
+    return this.http.post(`${this.apiBaseUrl}/un_auth/article/category/get_all_article_category`, params);
+  }
+  getProductsAllByCategoryWithPrice(params:any): Observable<any> {
+    return this.http.post(`${this.apiBaseUrl}/un_auth/product/category/get_type_all_product_price`, params);
+  }
+  getListFileImageByType(type:any): Observable<any> {
+    return this.http.post(`${this.apiBaseUrl}/un_auth/files/get_info_file_type`, type);
+  }
 }
 //update.category.admin.component.html

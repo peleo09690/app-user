@@ -6,11 +6,14 @@ import { UserService } from '../../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { AngularMaterialModule } from 'src/app/common/angular-material.module';
 import { CategoryService } from 'src/app/services/category.service';
 import { ProductService } from 'src/app/services/product.service';
+import { LoginComponent } from '../../login/login.component';
+import { RegisterComponent } from '../../register/register.component';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -116,6 +119,7 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private productService: ProductService,
     private categoryService: CategoryService,
+    private dialog : MatDialog,
   ) {
 
   }
@@ -174,7 +178,10 @@ export class HeaderComponent implements OnInit {
 
     this.categoryService.getListCategoryType(param).subscribe({
       next: (categories) => {
-        this.categories = categories.result_data?.categoryInfo;
+        if (categories.result_data.categoryInfo) {
+          this.categories = categories.result_data?.categoryInfo.slice(0, 5);
+          this.menus = categories.result_data?.categoryInfo;
+        }
       },
       complete: () => {
         ;
@@ -191,12 +198,41 @@ export class HeaderComponent implements OnInit {
       this.router.navigate(['/product'], { queryParams: { categoryId: category.category_id }, queryParamsHandling: 'merge' });
     });
   }
+  registerUser(){
+    const dialog = this.dialog.open(RegisterComponent, {
+      width: '500px',
+      id: 'dialog-register',
+      disableClose: true,
+      panelClass: [ 'dialog-register'],
+    });
+    dialog.afterClosed().subscribe((res) => {
+      if (res =='OK') {
 
+      }
+      // this.refreshData();
+    });
+  }
+
+  loginUser(){
+    const dialog = this.dialog.open(LoginComponent, {
+      width: '500px',
+      id: 'dialog-login',
+      disableClose: true,
+      panelClass: [ 'dialog-login'],
+    });
+    dialog.afterClosed().subscribe((res) => {
+      if (res =='OK') {
+
+      }
+      // this.refreshData();
+    });
+  }
   /**
-   * handleRouterCart
-   */
+ * handleRouterCart
+ */
   public handleRouterCart() {
     this.router.navigate(['/cart']);
 
   }
+
 }

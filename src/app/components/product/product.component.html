@@ -23,8 +23,10 @@
         <p class="title-child-left">Danh mục</p>
         <input class="input-search"
                type="text"
-               placeholder="Tìm kiếm ..." [(ngModel)]="inputSearchCategory" (input)="searchCategoryProduct()" >
-        <div class="check-box-category"
+               placeholder="Tìm kiếm ..."
+               [(ngModel)]="inputSearchCategory"
+               (input)="searchCategoryProduct()">
+        <div class="check-box-category" 
              *ngFor="let item of filteredCategories">
           <input type="checkbox">
           <span>{{item.category_name}}</span>
@@ -47,11 +49,13 @@
               <label for="min-price">Min</label>
               <input matInput
                      type="string"
+                     readonly
                      value="{{searchMin}}" />
             </div>
             <div class="group-input-view-price">
               <label for="max-price">Max</label>
               <input matInput
+                     readonly
                      type="string"
                      value="{{searchMax}}" />
             </div>
@@ -66,7 +70,9 @@
         <p class="title-child-left">Thương hiệu</p>
         <input class="input-search"
                type="text"
-               placeholder="Tìm kiếm ..." [(ngModel)]="inputSearchTrademark" (input)="searchTrademarkProduct()">
+               placeholder="Tìm kiếm ..."
+               [(ngModel)]="inputSearchTrademark"
+               (input)="searchTrademarkProduct()">
         <div class="check-box-category"
              *ngFor="let item of filteredTrademark">
           <input type="checkbox">
@@ -77,7 +83,20 @@
       <div class="group-posts-category-child group-child-left">
         <div class="group-title-posts">
           <span class="title-child-left title-post"> Bài viết về {{categoryName}}</span>
-          <span class="show-more">Xem thêm</span>
+          <span class="show-more" (click)="showMorePost()">Xem thêm</span>
+        </div>
+        <div class="group-content-posts">
+          <div class="control-post" *ngFor="let post of listPosts">
+            <img [src]="post.srcImage" alt="">
+            <div class="content-post">
+              <div class="content">
+                {{post.content}}
+              </div>
+              <div class="date-post">
+                {{post.create_date}}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -89,23 +108,33 @@
         </div>
         <div class="group-sort-product">
           <span class="title-sort">Sắp xếp theo</span>
-          <button class="sort-button" [class.active]="activeButton === 'default'" (click)=activeButtonSort(0)>Mặc định</button>
-          <button class="sort-button" [class.active]="activeButton === 'hight-price'" (click)=activeButtonSort(1)>Giá cao</button>
-          <button class="sort-button" [class.active]="activeButton === 'low-price'" (click)=activeButtonSort(2)>Giá thấp</button>
-          <button class="sort-button" [class.active]="activeButton === 'name'" (click)=activeButtonSort(3)>A-z</button>
+          <button class="sort-button"
+                  [class.active]="activeButton === 'default'"
+                  (click)=activeButtonSort(0)>Mặc định</button>
+          <button class="sort-button"
+                  [class.active]="activeButton === 'hight-price'"
+                  (click)=activeButtonSort(1)>Giá cao</button>
+          <button class="sort-button"
+                  [class.active]="activeButton === 'low-price'"
+                  (click)=activeButtonSort(2)>Giá thấp</button>
+          <button class="sort-button"
+                  [class.active]="activeButton === 'name'"
+                  (click)=activeButtonSort(3)>A-z</button>
         </div>
       </div>
       <div class="product-grid">
         <div class="list-product">
           <div *ngFor="let product of products"
                class="product">
-            <div class="product-image" (click)="routerLinkProduct(product)">
+            <div class="product-image"
+                 (click)="routerLinkProduct(product)">
               <img [src]="product.srcImage"
                    alt="{{product.product_name}}">
               <div *ngIf="product.discount>0"
                    class="discount-tag">-{{product.discount}}%</div>
             </div>
-            <div class="product-info" (click)="routerLinkProduct(product)">
+            <div class="product-info"
+                 (click)="routerLinkProduct(product)">
               <h3 class="title">
                 <a href=""
                    title="{{product.name}}">{{product.product_name}}</a>
@@ -116,9 +145,11 @@
             </div>
           </div>
         </div>
-        <app-pagination [data]="this.products" [totalRecords]="totalRecords" [pageSize]="this.pageSize"
-            (pageChanged)="onPageChanged($event)">
-          </app-pagination>
+        <app-pagination [data]="this.products"
+                        [totalRecords]="totalRecords"
+                        [pageSize]="this.pageSize"
+                        (pageChanged)="onPageChanged($event)">
+        </app-pagination>
       </div>
     </div>
   </div>

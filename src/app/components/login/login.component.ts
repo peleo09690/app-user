@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { LoginDTO } from '../../dtos/user/login.dto';
 import { UserService } from '../../services/user.service';
 import { TokenService } from '../../services/token.service';
@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
 import { LoginResponse } from '../../responses/user/login.response';
 import { Role } from '../../models/role'; // Đường dẫn đến model Role
 import { UserResponse } from '../../responses/user/user.response';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -16,108 +17,67 @@ import { UserResponse } from '../../responses/user/user.response';
 })
 export class LoginComponent implements OnInit {
   @ViewChild('loginForm') loginForm!: NgForm;
-
-  /*
-  //Login user
-  phoneNumber: string = '33445566';
-  password: string = '123456789';
-
-  //Login admin
-  phoneNumber: string = '11223344';
-  password: string = '11223344';
-
-  */
-  phoneNumber: string = '44556677';
-  password: string = '123456789';
-  showPassword: boolean = false;
-
+  model:any = {email : '', password:''};
+  userModel?: any;
   roles: Role[] = []; // Mảng roles
   rememberMe: boolean = true;
-  selectedRole: Role | undefined; // Biến để lưu giá trị được chọn từ dropdown
-  userResponse?: UserResponse
+  showPassword = false;
 
-  onPhoneNumberChange() {
-    console.log(`Phone typed: ${this.phoneNumber}`);
-    //how to validate ? phone must be at least 6 characters
-  }
+
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<LoginComponent>,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private userService: UserService,
     private tokenService: TokenService,
-    private roleService: RoleService
+    private roleService: RoleService,
   ) { }
 
   ngOnInit() {
-    // Gọi API lấy danh sách roles và lưu vào biến roles
-    this.roleService.getRoles().subscribe({
-      next: (roles: Role[]) => { // Sử dụng kiểu Role[]
-        this.roles = roles;
-        this.selectedRole = roles.length > 0 ? roles[0] : undefined;
-      },
-      complete: () => {
-      },
-      error: (error: any) => {
-        console.error('Error getting roles:', error);
-      }
-    });
+    
   }
   createAccount() {
-    
     // Chuyển hướng người dùng đến trang đăng ký (hoặc trang tạo tài khoản)
     this.router.navigate(['/register']);
   }
   login() {
-    const message = `phone: ${this.phoneNumber}` +
-      `password: ${this.password}`;
-    //alert(message);
-    
-
-    const loginDTO: LoginDTO = {
-      phone_number: this.phoneNumber,
-      password: this.password,
-      role_id: this.selectedRole?.id ?? 1
-    };
-    this.userService.login(loginDTO).subscribe({
-      next: (response: LoginResponse) => {
-        ;
-        const { token } = response;
-        if (this.rememberMe) {
-          this.tokenService.setToken(token);
-          ;
-          this.userService.getUserDetail(token).subscribe({
-            next: (response: any) => {
-              
-              this.userResponse = {
-                ...response,
-                date_of_birth: new Date(response.date_of_birth),
-              };
-              this.userService.saveUserResponseToLocalStorage(this.userResponse);
-              if (this.userResponse?.role.name == 'admin') {
-                this.router.navigate(['/admin']);
-              } else if (this.userResponse?.role.name == 'user') {
-                this.router.navigate(['/']);
+      this.model.email = 'quangtan1197@gmail.com'
+      this.model.password = '123456'
+      this.userService.login(this.model).subscribe({
+        next: (response: any) => {
+          const token = response.result_data?.token as string;
+          const userId = response.result_data?.userId as string;
+          if (this.rememberMe) {
+            this.tokenService.setToken(token);
+            this.userService.getUserById(userId).subscribe({
+              next: (response: any) => {
+                this.userModel = response.result_data;
+                this.userService.saveUserResponseToLocalStorage(this.userModel);
+                if (this.userModel?.roleId == '1') {
+                  this.router.navigate(['/']).then(() => {
+                    window.location.reload();
+                  });
+                } else if (this.userModel?.roleId == '2') {
+                  this.router.navigate(['/login']);
+                }
+  
+              },
+              complete: () => {
+              },
+              error: (error: any) => {
+                alert(error.error.message);
               }
-
-            },
-            complete: () => {
-              ;
-            },
-            error: (error: any) => {
-              ;
-              alert(error.error.message);
-            }
-          })
+            });
+          }
+        },
+        complete: () => {
+        },
+        error: (error: any) => {
+          alert(error.error.message);
         }
-      },
-      complete: () => {
-        ;
-      },
-      error: (error: any) => {
-        ;
-        alert(error.error.message);
-      }
-    });
+      });
+    
   }
   togglePassword() {
     this.showPassword = !this.showPassword;

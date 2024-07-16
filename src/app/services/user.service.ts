@@ -12,9 +12,9 @@ import { UpdateUserDTO } from '../dtos/user/update.user.dto';
     providedIn: 'root'
 })
 export class UserService {
-    private apiRegister = `${environment.apiBaseUrl}/users/register`;
-    private apiLogin = `${environment.apiBaseUrl}/users/login`;
-    private apiUserDetail = `${environment.apiBaseUrl}/users/details`;
+    private apiRegister = `${environment.apiBaseUrl}/un_auth/signup/user`;
+    private apiLogin = `${environment.apiBaseUrl}/un_auth/signin`;
+    private apiUserDetail = `${environment.apiBaseUrl}/un_auth/user/`;
 
     private apiConfig = {
         headers: this.httpUtilService.createHeaders(),
@@ -25,12 +25,12 @@ export class UserService {
         private httpUtilService: HttpUtilService
     ) { }
 
-    register(registerDTO: RegisterDTO): Observable<any> {
-        return this.http.post(this.apiRegister, registerDTO, this.apiConfig);
+    register(registerDTO: any): Observable<any> {
+        return this.http.post(this.apiRegister, registerDTO);
     }
 
     login(loginDTO: LoginDTO): Observable<any> {
-        return this.http.post(this.apiLogin, loginDTO, this.apiConfig);
+        return this.http.post(this.apiLogin, loginDTO);
     }
     getUserDetail(token: string) {
         return this.http.post(this.apiUserDetail, {
@@ -91,5 +91,7 @@ export class UserService {
             // Handle the error as needed
         }
     }
-
+    getUserById(userId :string): Observable<any> {
+        return this.http.get<any>(`${this.apiUserDetail}${userId}`);
+      }
 }

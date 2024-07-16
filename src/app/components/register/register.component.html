@@ -1,0 +1,33 @@
+<div class="contaner-register">
+  <div class="header">
+    <div class="title-form">
+      Đăng ký
+    </div>
+    <span class="v-cursor material-icons v-close"
+    (click)="onCloseDialog()">
+    close
+  </span>
+  </div>
+  
+  <div class="form-content">
+    <div class="control-form">
+      <label for="">Họ</label>
+      <input type="text" [(ngModel)]="requestRegister.last_name">
+    </div>
+    <div class="control-form">
+      <label for="">Tên</label>
+      <input type="text" [(ngModel)]="requestRegister.first_name">
+    </div>
+    <div class="control-form">
+      <label for="">Email</label>
+      <input type="text" [(ngModel)]="requestRegister.email">
+    </div>
+    <div class="control-form">
+      <label for="">Password</label>
+      <input type="password" [(ngModel)]="requestRegister.password">
+    </div>
+    <div class="btn-regis">
+      <button mat-button (click)="registerUser()" >Đăng ký</button>
+    </div>
+  </div>
+</div>

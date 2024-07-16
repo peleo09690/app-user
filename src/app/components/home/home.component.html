@@ -2,10 +2,22 @@
     <div>{{item.name}}</div>
 </div> -->
 <div class="container-home">
-    <div class="slide-home image-banner">
+    <div class="slide-show">
+        <ngb-carousel>
+            <ng-template ngbSlide *ngFor="let slide of slides">
+              <div class="wrapper">
+                <img [src]="slide.imageUrl" alt="Random first slide">
+              </div>
+              <div class="carousel-caption">
+                <p> {{slide.name}} </p>
+              </div>
+            </ng-template>
+          </ngb-carousel>
+    </div>
+    <!-- <div class="slide-home image-banner">
         <img src="./../../../assets/images/image-slide1.webp"
              alt="">
-    </div>
+    </div> -->
     <div class="banner-home-info image-banner">
         <img src="./../../../assets/images/banner-info.jpg"
              alt="">
@@ -32,13 +44,15 @@
                     <div ngxSlickItem
                          *ngFor="let product of products"
                          class="product">
-                        <div class="product-image" (click)="routerLinkProduct(product)">
+                        <div class="product-image"
+                             (click)="routerLinkProduct(product)">
                             <img [src]="product.srcImage"
                                  alt="{{product.product_name}}">
                             <div *ngIf="product.discount > 0"
                                  class="discount-tag">-{{product.discount}}%</div>
                         </div>
-                        <div class="product-info" (click)="routerLinkProduct(product)">
+                        <div class="product-info"
+                             (click)="routerLinkProduct(product)">
                             <h3 class="title">
                                 <a href=""
                                    title="{{product.product_name}}">{{product.product_name}}</a>
@@ -86,13 +100,15 @@
         <div class="list-product-by-brand list-product">
             <div *ngFor="let product of productsHotBrand"
                  class="product">
-                <div class="product-image" (click)="routerLinkProduct(product)">
+                <div class="product-image"
+                     (click)="routerLinkProduct(product)">
                     <img [src]="product.srcImage"
                          alt="{{product.product_name}}">
                     <div *ngIf="product.discount > 0"
                          class="discount-tag">-{{product.discount}}%</div>
                 </div>
-                <div class="product-info" (click)="routerLinkProduct(product)">
+                <div class="product-info"
+                     (click)="routerLinkProduct(product)">
                     <h3 class="title">
                         <a href=""
                            title="{{product.product_name}}">{{product.product_name}}</a>
@@ -134,7 +150,7 @@
         <div class="list-product-by-family list-product">
             <div *ngFor="let product of productsFamily"
                  class="product">
-                <div class="product-image" 
+                <div class="product-image"
                      (click)="routerLinkProduct(product)">
                     <img [src]="product.srcImage"
                          alt="{{product.product_name}}">
@@ -178,7 +194,8 @@
                 <div ngxSlickItem
                      *ngFor="let product of listProductBestSellingBrand"
                      class="product">
-                    <div class="product-image" (click)="routerLinkProduct(product)">
+                    <div class="product-image"
+                         (click)="routerLinkProduct(product)">
                         <img [src]="product?.imageUrl"
                              alt="{{product?.name}}">
                     </div>

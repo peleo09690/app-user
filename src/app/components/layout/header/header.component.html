@@ -28,33 +28,33 @@
         <mat-menu #mainMenu="matMenu">
           <ng-container *ngFor="let menu of menus">
             <!-- Menu item for each category -->
-            <button mat-menu-item [matMenuTriggerFor]="menu.subMenus?.length > 0 ? menuName: null">
-              <span class="menu-icon">{{ menu.icon }}</span>
-              <span class="menu-name">{{ menu.name }}</span>
+            <button mat-menu-item [matMenuTriggerFor]="menu.category_parent_id?.length > 0 ? menuName: null" (click)="searchProductByCategory(menu)">
+              <span class="menu-icon">{{ menu?.icon }}</span>
+              <span class="menu-name">{{ menu.category_name }}</span>
             </button>
 
             <!-- Sub menu for each category -->
             <mat-menu #menuName="matMenu">
-              <ng-container *ngFor="let subMenu of menu.subMenus">
+              <ng-container *ngFor="let subMenu of menu.category_parent_id" >
                 <!-- Sub menu item with arrow if it has sub sub menus -->
-                <button mat-menu-item *ngIf="subMenu.subMenus?.length" [matMenuTriggerFor]="subMenuName">
-                  {{ subMenu.name }}
+                <button mat-menu-item *ngIf="subMenu.category_parent_id?.length" [matMenuTriggerFor]="subMenuName" (click)="searchProductByCategory(subMenu)">
+                  {{ subMenu.category_name }}
                 </button>
 
                 <!-- Sub menu item without arrow if it has no sub sub menus -->
-                <button mat-menu-item *ngIf="!subMenu.subMenus?.length">
-                  {{ subMenu.name }}
+                <button mat-menu-item *ngIf="!subMenu.category_parent_id?.length" (click)="searchProductByCategory(subMenu)">
+                  {{ subMenu.category_name }}
                 </button>
 
                 <!-- Sub sub menu for each sub menu -->
                 <mat-menu #subMenuName="matMenu" >
-                  <ng-container *ngFor="let subSubMenu of subMenu.subMenus">
+                  <ng-container *ngFor="let subSubMenu of subMenu.category_parent_id">
                     <!-- Sub sub menu item -->
-                    <button mat-menu-item *ngIf="subSubMenu.subMenus?.length">
-                      {{ subSubMenu.name }}
+                    <button mat-menu-item *ngIf="subSubMenu.category_parent_id?.length" (click)="searchProductByCategory(subSubMenu)">
+                      {{ subSubMenu.category_name }}
                     </button>
-                    <button mat-menu-item *ngIf="!subSubMenu.subMenus?.length">
-                      {{ subMenu.name }}
+                    <button mat-menu-item *ngIf="!subSubMenu.category_parent_id?.length" (click)="searchProductByCategory(subSubMenu)">
+                      {{ subMenu.category_name }}
                     </button>
                   </ng-container>
                 </mat-menu>
@@ -119,7 +119,7 @@
           <li>
             <a rel="nofollow"
                id="register-btn"
-               href="javascript:void(0);"
+               (click)="registerUser()"
                title="Đăng ký"
                data-bs-toggle="modal"
                data-bs-target="#registerOtp">Đăng ký</a>
@@ -127,7 +127,7 @@
           <li>
             <a rel="nofollow"
                id="login-btn"
-               href="javascript:void(0);"
+               (click)="loginUser()"
                title="Đăng nhập"
                data-bs-toggle="modal"
                data-bs-target="#Register">Đăng nhập</a>
