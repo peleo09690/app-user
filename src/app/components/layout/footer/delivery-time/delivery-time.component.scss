@@ -1,0 +1,123 @@
+.link-product {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 0;
+  background-color: #ffffff;
+  overflow: visible;
+  border-color: #d9d9d9;
+  border-style: solid;
+  border-top-width: 0px;
+  border-bottom-width: 1px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+
+  .group-link-child {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.group-content-page-footer {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+
+  .content-left {
+    width: 25%;
+
+    .header {
+      font-weight: 400;
+      font-size: 15px;
+      color: #ffffff;
+      width: 100%;
+      padding: 15px;
+      background-color: #bb0029;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .body-content {
+      padding: 18px;
+      border-right: 1px solid #ddd;
+      border-left: 1px solid #ddd;
+      .control-content {
+        margin-bottom: 10px;
+
+        a {
+          color: #666666;
+          font-family: 'Roboto', sans-serif;
+          font-size: 15px;
+          font-weight: 400;
+          padding: 0;
+          line-height: 1.5;
+          text-decoration: none;
+        }
+      }
+      .active {
+        a {
+          color: #bb0029;
+        }
+      }
+
+      .control-content:hover {
+        a {
+          color: #bb0029;
+        }
+
+      }
+    }
+
+    .footer-content {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      color: #333;
+      display: inline-block;
+      width: 100%;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background-color: #f7f7f7;
+      border: 1px solid #ddd;
+    }
+  }
+
+  .content-right {
+    width: 75%;
+    padding: 20px;
+    background: #f7f7f7;
+    text-align: justify;
+
+    .title {
+      text-transform: uppercase;
+      font-family: 'Roboto', sans-serif;
+      color: #111;
+      border-bottom: 2px solid #bb0029;
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    .detail-content {
+      p {
+        margin-bottom: 0;
+        font-weight: 400;
+        font-size: 15px;
+        color: #000;
+        line-height: 1.8;
+      }
+
+      .content-parent {
+        margin-left: 5px;
+      }
+
+      .content-child {
+        margin-left: 20px;
+      }
+    }
+  }
+}

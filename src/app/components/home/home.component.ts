@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
 import { Product } from '../../models/product';
 import { Category } from '../../models/category';
 import { ProductService } from 'src/app/services/product.service';
@@ -9,12 +9,15 @@ import { TokenService } from 'src/app/services/token.service';
 import { CommonModule } from '@angular/common';
 import { SlickCarouselComponent, SlickCarouselModule } from 'ngx-slick-carousel';
 import 'zone.js/dist/zone';  // Included with Angular CLI.
+import { NgbCarouselConfig, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, SlickCarouselModule],
+  imports: [CommonModule, SlickCarouselModule,NgbModule],
+  providers: [NgbCarouselConfig],
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class HomeComponent implements OnInit {
   @ViewChild(SlickCarouselComponent) slickCarousel: SlickCarouselComponent | any;
@@ -129,7 +132,11 @@ export class HomeComponent implements OnInit {
       reviews: 11244,
     },
   ];
-
+  slides = [
+    { imageUrl: './../../../assets/images/image-slide1.webp', name: 'Slide 1' },
+    { imageUrl: './../../../assets/images/banner-info1.webp', name: 'Slide 2' },
+    { imageUrl: './../../../assets/images/banner-info2.webp', name: 'Slide 3' }
+  ];
   slideConfig = { slidesToShow: 5, slidesToScroll: 5, dots: false, infinite: true };
 
   itemsHotBrand: any = [
@@ -630,17 +637,24 @@ export class HomeComponent implements OnInit {
     "sort_by": "",
     "sort_direction": "asc"
   }
+  images = [700, 800, 807].map((n) => `https://picsum.photos/id/${n}/900/500`);
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
     private router: Router,
     private tokenService: TokenService,
-  ) { }
+    config: NgbCarouselConfig
+  ) {
+    config.interval = 500;
+    config.keyboard = true;
+    config.pauseOnHover = true;
+   }
 
   ngOnInit() {
     // this.getProducts(this.keyword, this.selectedCategoryId, this.currentPage, this.itemsPerPage);
     // this.getCategories(1, 100);
     // this.productsHotBrand = this.productsHotBrandOriHiro;
+    // this.slides = this.productss;
     this.productsFamily = this.productsFamilyUT;
     this.onSearchProduct();
     this.getListCategories();
@@ -855,5 +869,8 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/product/'+ product.product_id]).then(() => {
       window.location.reload(); // Reload trang sau khi navigation
     });;
+  }
+  onItemChange($event: any): void {
+    console.log('Carousel onItemChange', $event);
   }
 }

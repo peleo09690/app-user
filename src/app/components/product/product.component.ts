@@ -16,7 +16,7 @@ import { ProductService } from 'src/app/services/product.service';
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class ProductComponent implements OnInit,OnChanges {
+export class ProductComponent implements OnInit, OnChanges {
 
   categoryName: string = '';
   productName: string = '';
@@ -42,17 +42,29 @@ export class ProductComponent implements OnInit,OnChanges {
 
   paramsSearchWithCategory = {
     "category_id": "",
+    "price_to": "0",
+    "price_from": "0",
     "product_name": "",
     "product_code": "",
-    "page_number": "1",
-    "page_size": "2",
+    "page_number": 1,
+    "page_size": 2,
     "sort_by": "",
     "sort_direction": "asc"
+  }
+  paramArticle = {
+    "category_id": "",
+    "article_name": "",
+    "status": "",
+    "page_number": "1",
+    "page_size": 5,
+    "sort_by": "",
+    "sort_direction": "desc"
   }
   inputSearchCategory = '';
   inputSearchTrademark = '';
   filteredCategories: any = [];
   filteredTrademark: any = [];
+  listPosts: any = []
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute,
@@ -67,6 +79,8 @@ export class ProductComponent implements OnInit,OnChanges {
       this.onSearchProduct();
     } else if (this.paramsSearchWithCategory.category_id) {
       this.onSearchProductByCategory();
+      this.paramArticle.category_id = this.paramsSearchWithCategory.category_id;
+      //get article
     }
   }
   query = '';
@@ -74,7 +88,7 @@ export class ProductComponent implements OnInit,OnChanges {
   ngOnInit() {
     this.searchMin = this.priceRange.min;
     this.searchMax = this.priceRange.max;
-   this.querySub =  this.route.queryParams.subscribe(params => {
+    this.querySub = this.route.queryParams.subscribe(params => {
       this.params.product_name = params['productName'];
       this.paramsSearchWithCategory.category_id = params['categoryId']
     });
@@ -82,6 +96,9 @@ export class ProductComponent implements OnInit,OnChanges {
       this.onSearchProduct();
     } else if (this.paramsSearchWithCategory.category_id) {
       this.onSearchProductByCategory();
+      this.paramArticle.category_id = this.paramsSearchWithCategory.category_id;
+      //get article
+      this.getListPostsByCategory()
     }
 
   }
@@ -93,7 +110,9 @@ export class ProductComponent implements OnInit,OnChanges {
   }
 
   applyPriceRange() {
-    // logic to apply the price range
+    this.paramsSearchWithCategory.price_from = this.searchMin.toString();
+    this.paramsSearchWithCategory.price_to = this.searchMax.toString();
+    this.getProductByCategoryWithPrice();
   }
 
   onSearchProduct() {
@@ -109,21 +128,25 @@ export class ProductComponent implements OnInit,OnChanges {
             this.listTrademarkChild = this.getUniqueAttribute(valueAll.result_data.list_product);
             this.filteredCategories = [...this.listCategoryChild];
             this.filteredTrademark = [...this.listTrademarkChild];
-            console.log(this.listTrademarkChild);
+
+            let prices = valueAll.result_data.list_product.map((product: any) => product.price);
+            this.priceRange.min = this.searchMin = Math.min(...prices);
+            this.priceRange.max = this.searchMax = Math.max(...prices);
           }
         }),
           this.products = value.result_data.list_product;
         this.totalRecords = value.result_data.total_records;
-        this.products.forEach((x: any) => {
-          if (x.image) {
-            this.getImageById(x.image).then((result) => {
-              x.srcImage = result;
-            }).catch((error) => {
-              console.error('Error fetching image:', error);
-            });
-          }
-        })
-
+        if (this.products?.length > 0) {
+          this.products.forEach((x: any) => {
+            if (x.image) {
+              this.getImageById(x.image).then((result) => {
+                x.srcImage = result;
+              }).catch((error) => {
+                console.error('Error fetching image:', error);
+              });
+            }
+          })
+        }
       },
       error: (error: any) => {
         ;
@@ -137,28 +160,35 @@ export class ProductComponent implements OnInit,OnChanges {
       next: (value) => {
 
         let paramsAll = { ...this.paramsSearchWithCategory };
-        paramsAll.page_size = value.result_data.total_records;
-        this.productService.getProductsAllByCategory(paramsAll).subscribe({
-          next: (valueAll) => {
-            this.listCategoryChild = this.getUniqueCategories(valueAll.result_data.list_product);
-            this.listTrademarkChild = this.getUniqueAttribute(valueAll.result_data.list_product);
-            this.filteredCategories = [...this.listCategoryChild];
-            this.filteredTrademark = [...this.listTrademarkChild];
-            console.log(this.listTrademarkChild);
-          }
-        }),
-          this.products = value.result_data.list_product;
-        this.totalRecords = value.result_data.total_records;
-        this.products.forEach((x: any) => {
-          if (x.image) {
-            this.getImageById(x.image).then((result) => {
-              x.srcImage = result;
-            }).catch((error) => {
-              console.error('Error fetching image:', error);
-            });
-          }
-        })
+        if (value.result_data?.list_product) {
+          paramsAll.page_size = value.result_data.total_records;
+          this.productService.getProductsAllByCategory(paramsAll).subscribe({
+            next: (valueAll) => {
+              this.listCategoryChild = this.getUniqueCategories(valueAll.result_data.list_product);
+              this.listTrademarkChild = this.getUniqueAttribute(valueAll.result_data.list_product);
+              this.filteredCategories = [...this.listCategoryChild];
+              this.filteredTrademark = [...this.listTrademarkChild];
 
+              let prices = valueAll.result_data.list_product.map((product: any) => product.price);
+              this.priceRange.min = this.searchMin = Math.min(...prices);
+              this.priceRange.max = this.searchMax = Math.max(...prices);
+            }
+          })
+        }
+
+        this.products = value.result_data.list_product;
+        this.totalRecords = value.result_data.total_records;
+        if (this.products?.length > 0) {
+          this.products.forEach((x: any) => {
+            if (x.image) {
+              this.getImageById(x.image).then((result) => {
+                x.srcImage = result;
+              }).catch((error) => {
+                console.error('Error fetching image:', error);
+              });
+            }
+          })
+        }
       },
       error: (error: any) => {
         ;
@@ -191,40 +221,16 @@ export class ProductComponent implements OnInit,OnChanges {
     });
   }
   onPageChanged(page: number): void {
-    this.params.page_number = page;
-    this.params.page_size = this.pageSize;
-    this.productService.getProductsAll(this.params).subscribe({
-      next: (value) => {
-        let paramsAll = { ...this.params };
-        paramsAll.page_size = value.result_data.total_records;
-        this.productService.getProductsAll(paramsAll).subscribe({
-          next: (valueAll) => {
-            this.listCategoryChild = this.getUniqueCategories(valueAll.result_data.list_product);
-            this.listTrademarkChild = this.getUniqueAttribute(valueAll.result_data.list_product);
-            this.filteredCategories = [...this.listCategoryChild];
-            this.filteredTrademark = [...this.listTrademarkChild];
-            console.log(this.listTrademarkChild);
-          }
-        }),
-          this.products = value.result_data.list_product;
-        this.totalRecords = value.result_data.total_records;
-        this.pageSize = value.result_data.page_size
-        this.products.forEach((x: any) => {
-          if (x.image) {
-            this.getImageById(x.image).then((result) => {
-              x.srcImage = result;
-            }).catch((error) => {
-              console.error('Error fetching image:', error);
-            });
-          }
-        })
+    if (this.params.product_name) {
+      this.params.page_number = page;
+      this.params.page_size = this.pageSize;
+      this.onSearchProduct();
+    } else if (this.paramsSearchWithCategory.category_id) {
+      this.paramsSearchWithCategory.page_number = page;
+      this.paramsSearchWithCategory.page_size = this.pageSize;
+      this.onSearchProductByCategory();
+    }
 
-      },
-      error: (error: any) => {
-        ;
-        alert(error.error.message);
-      }
-    })
   }
   activeButtonSort(index: number) {
     switch (index) {
@@ -232,25 +238,49 @@ export class ProductComponent implements OnInit,OnChanges {
         this.activeButton = "default";
         this.params.sort_by = "productName";
         this.params.sort_direction = "asc";
-        this.onSearchProduct();
+        if (this.params.product_name) {
+          this.onSearchProduct();
+        } else if (this.paramsSearchWithCategory.category_id) {
+          this.onSearchProductByCategory();
+          this.paramArticle.category_id = this.paramsSearchWithCategory.category_id;
+          //get article
+        }
         break;
       case 1:
         this.activeButton = "hight-price";
-        this.params.sort_by = "price";
-        this.params.sort_direction = "desc";
-        this.onSearchProduct();
+        if (this.params.product_name) {
+          this.params.sort_by = "price";
+          this.params.sort_direction = "desc";
+          this.onSearchProduct();
+        } else if (this.paramsSearchWithCategory.category_id) {
+          this.paramsSearchWithCategory.sort_by = "price";
+          this.paramsSearchWithCategory.sort_direction = "desc";
+          this.onSearchProductByCategory();
+        }
         break;
       case 2:
         this.activeButton = "low-price";
-        this.params.sort_by = "price";
-        this.params.sort_direction = "asc";
-        this.onSearchProduct();
+        if (this.params.product_name) {
+          this.params.sort_by = "price";
+          this.params.sort_direction = "asc";
+          this.onSearchProduct();
+        } else if (this.paramsSearchWithCategory.category_id) {
+          this.paramsSearchWithCategory.sort_by = "price";
+          this.paramsSearchWithCategory.sort_direction = "asc";
+          this.onSearchProductByCategory();
+        }
         break;
       case 3:
         this.activeButton = "name";
-        this.params.sort_by = "productName";
-        this.params.sort_direction = "asc";
-        this.onSearchProduct();
+        if (this.params.product_name) {
+          this.params.sort_by = "productName";
+          this.params.sort_direction = "asc";
+          this.onSearchProduct();
+        } else if (this.paramsSearchWithCategory.category_id) {
+          this.paramsSearchWithCategory.sort_by = "productName";
+          this.paramsSearchWithCategory.sort_direction = "asc";
+          this.onSearchProductByCategory();
+        }
         break;
 
       default:
@@ -260,28 +290,39 @@ export class ProductComponent implements OnInit,OnChanges {
   getUniqueCategories(data: any[]): any[] {
     const uniqueCategories: any[] = [];
     const uniqueCategoryNames: string[] = [];
-    data.forEach(product => {
-      product.product_category_list.forEach((category: any) => {
-        if (!uniqueCategoryNames.includes(category.category_name)) {
-          uniqueCategoryNames.push(category.category_name);
-          uniqueCategories.push(category);
+    if (data.length > 0) {
+      data.forEach(product => {
+        if (product?.product_category_list?.length > 0) {
+          product.product_category_list.forEach((category: any) => {
+            if (!uniqueCategoryNames.includes(category.category_name)) {
+              uniqueCategoryNames.push(category.category_name);
+              uniqueCategories.push(category);
+            }
+          });
         }
       });
-    });
+    }
+
     return uniqueCategories;
   }
 
   getUniqueAttribute(data: any[]): any[] {
     const uniqueAttribute: any[] = [];
     const uniqueAttributeName: string[] = [];
-    data.forEach(product => {
-      product.product_attribute_list.forEach((attribute: any) => {
-        if (!uniqueAttributeName.includes(attribute.attribute_name)) {
-          uniqueAttributeName.push(attribute.attribute_name);
-          uniqueAttribute.push(attribute);
+    if (data.length > 0) {
+      data.forEach(product => {
+        if (product?.product_attribute_list?.length > 0) {
+          product.product_attribute_list.forEach((attribute: any) => {
+            if (!uniqueAttributeName.includes(attribute.attribute_name)) {
+              uniqueAttributeName.push(attribute.attribute_name);
+              uniqueAttribute.push(attribute);
+            }
+          });
         }
+
       });
-    });
+    }
+
     return uniqueAttribute;
   }
 
@@ -298,8 +339,59 @@ export class ProductComponent implements OnInit,OnChanges {
   }
 
   routerLinkProduct(product: any) {
-    this.router.navigate(['/product/'+ product.product_id]).then(() => {
+    this.router.navigate(['/product/' + product.product_id]).then(() => {
       window.location.reload(); // Reload trang sau khi navigation
     });
+  }
+
+  getListPostsByCategory() {
+    this.productService.getAllArticleByCategory(this.paramArticle).subscribe({
+      next: (value) => {
+        this.listPosts = value.result_data.list_article;
+        if (this.listPosts?.length > 0) {
+          this.listPosts.forEach((x: any) => {
+            if (x.image) {
+              this.getImageById(x.image).then((result) => {
+                x.srcImage = result;
+              }).catch((error) => {
+                console.error('Error fetching image:', error);
+              });
+            }
+          })
+        }
+      },
+      error: (error: any) => {
+        ;
+        alert(error.error.message);
+      }
+    })
+  }
+  showMorePost() {
+    this.paramArticle.page_size += this.paramArticle.page_size;
+    this.getListPostsByCategory();
+  }
+
+  getProductByCategoryWithPrice() {
+    this.productService.getProductsAllByCategoryWithPrice(this.paramsSearchWithCategory).subscribe({
+      next: (value) => {
+        this.products = value.result_data.list_product;
+        this.totalRecords = value.result_data.total_records;
+        if (this.products?.length > 0) {
+          this.products.forEach((x: any) => {
+            if (x.image) {
+              this.getImageById(x.image).then((result) => {
+                x.srcImage = result;
+              }).catch((error) => {
+                console.error('Error fetching image:', error);
+              });
+            }
+          })
+        }
+      },
+      error: (error: any) => {
+        ;
+        alert(error.error.message);
+      }
+    })
   }
 }
