@@ -1,21 +1,19 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { UserService } from '../../../services/user.service';
 import { UserResponse } from 'src/app/responses/user/user.response';
 import { TokenService } from 'src/app/services/token.service';
+import { UserService } from '../../../services/user.service';
 
-import { ActivatedRoute, Router } from '@angular/router';
-import { AngularMaterialModule } from 'src/app/common/angular-material.module';
-import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { MatMenu, MatMenuModule, MatMenuPanel } from '@angular/material/menu';
-import { MatButtonModule } from '@angular/material/button';
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { ProductService } from 'src/app/services/product.service';
 import { FormsModule } from '@angular/forms';
-import { CategoryService } from 'src/app/services/category.service';
+import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { RegisterComponent } from '../../register/register.component';
+import { MatMenu, MatMenuModule } from '@angular/material/menu';
+import { Router } from '@angular/router';
+import { AngularMaterialModule } from 'src/app/common/angular-material.module';
+import { CategoryService } from 'src/app/services/category.service';
+import { ProductService } from 'src/app/services/product.service';
 import { LoginComponent } from '../../login/login.component';
+import { RegisterComponent } from '../../register/register.component';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -125,7 +123,10 @@ export class HeaderComponent implements OnInit {
   ) {
 
   }
+  public listProduct: any
   ngOnInit() {
+    this.listProduct = JSON.parse(localStorage.getItem('list-product-cart') || '[]');
+
     this.userResponse = this.userService.getUserResponseFromLocalStorage();
     this.getListCategories();
   }
@@ -144,7 +145,7 @@ export class HeaderComponent implements OnInit {
       this.tokenService.removeToken();
       this.userResponse = this.userService.getUserResponseFromLocalStorage();
     }
-    this.isPopoverOpen = false; // Close the popover after clicking an item    
+    this.isPopoverOpen = false; // Close the popover after clicking an item
   }
 
 
@@ -209,7 +210,7 @@ export class HeaderComponent implements OnInit {
     });
     dialog.afterClosed().subscribe((res) => {
       if (res =='OK') {
-        
+
       }
       // this.refreshData();
     });
@@ -224,11 +225,16 @@ export class HeaderComponent implements OnInit {
     });
     dialog.afterClosed().subscribe((res) => {
       if (res =='OK') {
-        
+
       }
       // this.refreshData();
     });
   }
-  
+  /**
+ * handleRouterCart
+ */
+  public handleRouterCart() {
+    this.router.navigate(['/cart']);
+  }
 
 }

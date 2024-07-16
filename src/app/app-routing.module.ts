@@ -1,20 +1,21 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
-import { CommonModule } from '@angular/common';
-import { LayoutComponent } from './components/layout/layout.component';
-import { ProductComponent } from './components/product/product.component';
-import { ProductDetailComponent } from './components/product/product-detail/product-detail.component';
-import { FooterSalesRegulationsComponent } from './components/layout/footer/footer-sales-regulations/footer-sales-regulations.component';
-import { MemberBenefitsComponent } from './components/layout/footer/member-benefits/member-benefits.component';
-import { ShoppingGuideComponent } from './components/layout/footer/shopping-guide/shopping-guide.component';
-import { ReturnRefundComponent } from './components/layout/footer/return-refund/return-refund.component';
-import { PrivacyPolicyComponent } from './components/layout/footer/privacy-policy/privacy-policy.component';
-import { WarrantyPolicyComponent } from './components/layout/footer/warranty-policy/warranty-policy.component';
+import { CartComponent } from './components/layout/cart/cart.component';
 import { DeliveryTimeComponent } from './components/layout/footer/delivery-time/delivery-time.component';
-import { PaymentMethodsComponent } from './components/layout/footer/payment-methods/payment-methods.component';
+import { FooterSalesRegulationsComponent } from './components/layout/footer/footer-sales-regulations/footer-sales-regulations.component';
 import { InformationWebsiteComponent } from './components/layout/footer/information-website/information-website.component';
+import { MemberBenefitsComponent } from './components/layout/footer/member-benefits/member-benefits.component';
+import { PaymentMethodsComponent } from './components/layout/footer/payment-methods/payment-methods.component';
+import { PrivacyPolicyComponent } from './components/layout/footer/privacy-policy/privacy-policy.component';
+import { ReturnRefundComponent } from './components/layout/footer/return-refund/return-refund.component';
+import { ShoppingGuideComponent } from './components/layout/footer/shopping-guide/shopping-guide.component';
+import { WarrantyPolicyComponent } from './components/layout/footer/warranty-policy/warranty-policy.component';
+import { LayoutComponent } from './components/layout/layout.component';
+import { LoginComponent } from './components/login/login.component';
+import { ProductDetailComponent } from './components/product/product-detail/product-detail.component';
+import { ProductComponent } from './components/product/product.component';
 
 
 const routes: Routes = [
@@ -38,6 +39,10 @@ const routes: Routes = [
       {
         path: "product/:id",
         component: ProductDetailComponent
+      },
+      {
+        path: "cart",
+        component: CartComponent
       },
       {
         path: "sales-regulations",

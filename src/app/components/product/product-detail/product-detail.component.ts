@@ -22,8 +22,8 @@ export class ProductDetailComponent implements OnInit {
 
   productDetail: any = {
     "image": "0f7848d98bf74244b3bea6c187b963c9",
-    "price": 51000.0,
-    "quantity": 0,
+    "price": 510000,
+    "quantity": 1,
     "product_id": "4023f6791a49491584822a3e2214d84d",
     "image_list": [],
     "product_category_list": [],
@@ -42,25 +42,25 @@ export class ProductDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.route.snapshot.paramMap.get('id')) {
-      this.idProduct = this.route.snapshot.paramMap.get('id');
-      this.productService.getProductsByIds(this.idProduct).subscribe({
-        next: (value) => {
-          this.productDetail = value.result_data;
-          if (this.productDetail.image) {
-            this.getImageById(this.productDetail.image).then((result) => {
-              this.productDetail.srcImage = result;
-            }).catch((error) => {
-              console.error('Error fetching image:', error);
-            });
-          }
-        },
-        error: (error: any) => {
-          ;
-          alert(error.error.message);
-        }
-      })
-    }
+    // if (this.route.snapshot.paramMap.get('id')) {
+    //   this.idProduct = this.route.snapshot.paramMap.get('id');
+    //   this.productService.getProductsByIds(this.idProduct).subscribe({
+    //     next: (value) => {
+    //       this.productDetail = value.result_data;
+    //       if (this.productDetail.image) {
+    //         this.getImageById(this.productDetail.image).then((result) => {
+    //           this.productDetail.srcImage = result;
+    //         }).catch((error) => {
+    //           console.error('Error fetching image:', error);
+    //         });
+    //       }
+    //     },
+    //     error: (error: any) => {
+    //       ;
+    //       alert(error.error.message);
+    //     }
+    //   })
+    // }
 
   }
 
@@ -86,5 +86,24 @@ export class ProductDetailComponent implements OnInit {
         }
       });
     });
+  }
+
+  /**
+   * handleAddCart
+   */
+  public handleAddCart(product:any) {
+    let listProduct = JSON.parse(localStorage.getItem('list-product-cart') || '[]');
+
+    const index = listProduct.findIndex((item: any) => item.product_id === product.product_id);
+    if (index !== -1) {
+      listProduct[index].quantity++;
+    }else{
+      listProduct = [
+        ...listProduct,
+        product
+      ]
+    }
+
+    localStorage.setItem('list-product-cart', JSON.stringify(listProduct));
   }
 }

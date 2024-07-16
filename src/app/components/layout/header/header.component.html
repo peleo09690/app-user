@@ -23,7 +23,7 @@
           <img src="./../../../../assets/images/icon_grid.svg" alt="">
           Danh mục sản phẩm
         </button>
-      
+
         <!-- Main menu -->
         <mat-menu #mainMenu="matMenu">
           <ng-container *ngFor="let menu of menus">
@@ -32,7 +32,7 @@
               <span class="menu-icon">{{ menu?.icon }}</span>
               <span class="menu-name">{{ menu.category_name }}</span>
             </button>
-      
+
             <!-- Sub menu for each category -->
             <mat-menu #menuName="matMenu">
               <ng-container *ngFor="let subMenu of menu.category_parent_id" >
@@ -40,12 +40,12 @@
                 <button mat-menu-item *ngIf="subMenu.category_parent_id?.length" [matMenuTriggerFor]="subMenuName" (click)="searchProductByCategory(subMenu)">
                   {{ subMenu.category_name }}
                 </button>
-      
+
                 <!-- Sub menu item without arrow if it has no sub sub menus -->
                 <button mat-menu-item *ngIf="!subMenu.category_parent_id?.length" (click)="searchProductByCategory(subMenu)">
                   {{ subMenu.category_name }}
                 </button>
-      
+
                 <!-- Sub sub menu for each sub menu -->
                 <mat-menu #subMenuName="matMenu" >
                   <ng-container *ngFor="let subSubMenu of subMenu.category_parent_id">
@@ -97,10 +97,11 @@
       <a rel="nofollow"
          href=""
          title="Giỏ hàng"
+         (click)="handleRouterCart()"
          class="header-right__cart">
         <img src="./../../../../assets/images/shopping_basket.svg"
              alt="">
-        <span class="cart-count"><abbr class="count-giohang">0</abbr></span>
+        <span class="cart-count"><abbr class="count-giohang">{{listProduct.length}}</abbr></span>
       </a>
 
       <div class="header-right__user user-info">
