@@ -79,5 +79,8 @@ export class ProductService {
   getProductsAllByCategoryWithPrice(params:any): Observable<any> {
     return this.http.post(`${this.apiBaseUrl}/un_auth/product/category/get_type_all_product_price`, params);
   }
+  getListFileImageByType(type:any): Observable<any> {
+    return this.http.post(`${this.apiBaseUrl}/un_auth/files/get_info_file_type`, type);
+  }
 }
 //update.category.admin.component.html

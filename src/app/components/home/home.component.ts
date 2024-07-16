@@ -873,4 +873,35 @@ export class HomeComponent implements OnInit {
   onItemChange($event: any): void {
     console.log('Carousel onItemChange', $event);
   }
+
+  getListImageByType(type:any){
+    switch (type) {
+      case 1:
+        
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  getFileImageByType(type:any){
+    this.productService.getListFileImageByType(type).subscribe({
+      next: (value) => {
+        value.result_data.list_product.forEach((x: any) => {
+          if (x.image) {
+            this.getImageById(x.file_id).then((result) => {
+              x.srcImage = result;
+            }).catch((error) => {
+              console.error('Error fetching image:', error);
+            });
+          }
+        })
+      },
+      error: (error: any) => {
+        ;
+        alert(error.error.message);
+      }
+    })
+  }
 }
