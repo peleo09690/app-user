@@ -37,7 +37,7 @@
 
     <div class="total">
       <div  class="total-price">
-        Tạm Tính: {{handleTotalPrice()}} đ
+        <div>Tạm Tính:</div> <div [ngStyle]="{'color': '#dc0000'}">{{handleTotalPrice()}} đ</div>
       </div>
       <div>
         <button class="btn-card">Đặt hàng</button>
