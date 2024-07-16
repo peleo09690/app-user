@@ -28,6 +28,8 @@
       flex: 0.2;
 
       .total-price {
+        display: flex;
+        justify-content: space-between;
         padding: 13px 10px;
         border: 1px solid #f0f3f7;
         border-radius: 5px;
