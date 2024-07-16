@@ -19,10 +19,12 @@ import { registerLocaleData } from '@angular/common';
 import localeVi from '@angular/common/locales/vi';
 registerLocaleData(localeVi, 'vi-VN');
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { CartComponent } from './components/layout/cart/cart.component';
 @NgModule({
   declarations: [
     LoginComponent,
     AppComponent,
+    CartComponent,
   ],
   exports: [
     AngularMaterialModule,

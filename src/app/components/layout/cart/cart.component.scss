@@ -1,0 +1,113 @@
+.container {
+  padding: 20px;
+
+  .box-content {
+    display: flex;
+    gap: 20px;
+
+    .box-left {
+      flex: 0.9;
+
+      .box-name {
+        cursor: pointer;
+        width: 30%;
+        word-wrap: break-word;
+        .box-name-product:hover {
+          color: blue;
+        }
+      }
+    }
+
+    .total {
+      flex: 0.2;
+
+      .total-price {
+        padding: 13px 10px;
+        border: 1px solid #f0f3f7;
+        border-radius: 5px;
+        height: 50px;
+        /* Bán kính bo tròn cho hộp */
+        box-shadow: 0px 2px 2px 2px rgba(0, 0, 0, 0.2);
+        /* Tạo bóng đổ */
+      }
+    }
+  }
+}
+
+.box-product {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  border: 1px solid #f0f3f7;
+}
+
+.quantity-selector {
+  display: flex;
+
+  button {
+    font-size: 17px;
+    line-height: 12px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    padding: 0;
+
+    .material-icons {
+      color: #ffffff;
+    }
+  }
+
+  .decrease {
+    background-color: #d9d9d9;
+  }
+
+  .increase {
+    background-color: #dc0000;
+  }
+
+  input {
+    color: #000000;
+    font-size: 14px;
+    text-align: center;
+    border: none;
+    width: 30px;
+    height: 24px;
+    margin: 0 5px;
+    border-radius: 4px;
+    outline: none;
+  }
+}
+
+.btn-card {
+  width: 100%;
+  margin-top: 20px;
+  color: #ffffff;
+  font-size: 17px;
+  border-radius: 15px;
+  outline: none;
+  border: none;
+  padding: 0 30px;
+  background-color: #dc0000;
+}
+
+.btn-card:hover {
+  color: #dc0000;
+  background-color: #ffffff;
+  border: 1px solid #dc0000;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

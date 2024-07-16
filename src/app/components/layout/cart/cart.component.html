@@ -1,0 +1,47 @@
+<div class="container">
+  <div *ngIf="!listProduct">
+    Không có sản phẩm nào trong giỏ hàng của bạn!
+    <button>Tiếp tục mua sắm</button>
+  </div>
+
+  <div class="box-content">
+<div class="box-left">
+    <div class="title">Giỏ Hàng - {{listProduct.length}} Sản Phẩm</div>
+      <div *ngFor="let productDetail of listProduct">
+        <div class="box-product">
+          <div class="box-image">
+
+          </div>
+          <div class="box-name">
+            <div class="box-name-product" (click)="handleRouterProduct(productDetail.product_id)">{{productDetail.product_name}}</div>
+            <div [ngStyle]="{'color': '#008fe5'}">Xóa</div>
+          </div>
+          <div class="box-price" [ngStyle]="{'color': '#dc0000'}">
+            {{productDetail.price}} đ
+          </div>
+          <div class="box-quantity">
+            <div class="quantity-selector">
+              <button [ngClass]="{ 'decrease': productDetail.quantity ===1, 'increase': productDetail.quantity >1 }">
+                <span class="material-icons" (click)="handleMinusQuantity(productDetail)">remove</span>
+              </button>
+              <input type="number"
+                     value="{{productDetail.quantity}}">
+              <button class="increase">
+                <span class="material-icons" (click)="handlePlusQuantity(productDetail)">add</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+
+    <div class="total">
+      <div  class="total-price">
+        Tạm Tính: {{handleTotalPrice()}}đ
+      </div>
+      <div>
+        <button class="btn-card">Đặt hàng</button>
+      </div>
+    </div>
+  </div>
+</div>
