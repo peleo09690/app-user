@@ -123,7 +123,10 @@ export class HeaderComponent implements OnInit {
   ) {
 
   }
+  public listProduct: any
   ngOnInit() {
+    this.listProduct = JSON.parse(localStorage.getItem('list-product-cart') || '[]');
+
     this.userResponse = this.userService.getUserResponseFromLocalStorage();
     this.getListCategories();
   }
@@ -232,7 +235,6 @@ export class HeaderComponent implements OnInit {
  */
   public handleRouterCart() {
     this.router.navigate(['/cart']);
-
   }
 
 }

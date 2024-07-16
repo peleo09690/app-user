@@ -10,7 +10,7 @@
       <div *ngFor="let productDetail of listProduct">
         <div class="box-product">
           <div class="box-image">
-
+          <img [src]="productDetail.srcImage">
           </div>
           <div class="box-name">
             <div class="box-name-product" (click)="handleRouterProduct(productDetail.product_id)">{{productDetail.product_name}}</div>
@@ -37,7 +37,7 @@
 
     <div class="total">
       <div  class="total-price">
-        Tạm Tính: {{handleTotalPrice()}}đ
+        Tạm Tính: {{handleTotalPrice()}} đ
       </div>
       <div>
         <button class="btn-card">Đặt hàng</button>
