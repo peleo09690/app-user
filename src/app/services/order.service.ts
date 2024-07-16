@@ -44,4 +44,7 @@ export class OrderService {
     const url = `${environment.apiBaseUrl}/orders/${orderId}`;
     return this.http.delete(url, { responseType: 'text' });
   }
+  trackingByOrderNumber(trackingNumber: any): Observable<any> {
+    return this.http.get<any>(`${environment.apiBaseUrl}/un_auth/product_order/tracking_number/`+trackingNumber);
+  }
 }

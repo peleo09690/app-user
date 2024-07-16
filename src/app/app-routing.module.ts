@@ -16,6 +16,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProductDetailComponent } from './components/product/product-detail/product-detail.component';
 import { ProductComponent } from './components/product/product.component';
+import { SearchTrackingNumberComponent } from './components/search-tracking-number/search-tracking-number.component';
 
 
 const routes: Routes = [
@@ -79,6 +80,10 @@ const routes: Routes = [
       {
         path: "infor-website",
         component: InformationWebsiteComponent
+      },
+      {
+        path: "tracking-number-order",
+        component: SearchTrackingNumberComponent
       }
 
     ]
